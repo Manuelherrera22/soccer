@@ -22,7 +22,8 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [pRes, mRes] = await Promise.all([fetch('/api/admin/participants'), fetch('/api/bracket')]);
+      const baseUrl = window.location.protocol + '//' + window.location.host;
+      const [pRes, mRes] = await Promise.all([fetch(`${baseUrl}/api/admin/participants`), fetch(`${baseUrl}/api/bracket`)]);
       setParticipants(await pRes.json());
       setMatches(await mRes.json());
     } catch (e) { console.error(e); }
@@ -31,7 +32,8 @@ export default function AdminDashboard() {
 
   const handleGenerate = async () => {
     if (!confirm('¿Generar las llaves con los jugadores actuales?')) return;
-    const res = await fetch('/api/admin/generate', { method: 'POST' });
+    const baseUrl = window.location.protocol + '//' + window.location.host;
+    const res = await fetch(`${baseUrl}/api/admin/generate`, { method: 'POST' });
     const data = await res.json();
     alert(res.ok ? '✅ Llaves generadas' : data.error);
     fetchData();
@@ -50,7 +52,8 @@ export default function AdminDashboard() {
       return;
     }
 
-    const res = await fetch('/api/admin/advance', {
+    const baseUrl = window.location.protocol + '//' + window.location.host;
+    const res = await fetch(`${baseUrl}/api/admin/advance`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
