@@ -120,8 +120,10 @@ export default function Home() {
         <ShieldLogo />
         <h1 className="hero-heading">Inscríbete al Torneo</h1>
         <p className="hero-desc">Registrate y asegura tu lugar en la Gaming Cup. Llena el formulario para inscribirte y participar en el torneo.</p>
-        <button className="btn-gold-outline" type="button">Ver Detalles del Torneo</button>
-
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+          <a href="/bracket" className="btn-gold-outline" style={{ margin: 0 }}>Ver Llaves</a>
+          <a href="/ranking" className="btn-gold-outline" style={{ margin: 0, borderColor: 'var(--purple-glow)', color: 'var(--purple-glow)' }}>Ver Ranking</a>
+        </div>
         <div className="form-card">
           <h2 className="form-section-title">Datos de Registro</h2>
           {status.error && <div className="alert alert-error">⚠️ {status.error}</div>}

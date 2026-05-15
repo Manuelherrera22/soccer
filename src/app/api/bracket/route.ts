@@ -10,6 +10,8 @@ export async function GET() {
         round, 
         matchNumber as "matchNumber", 
         winnerId as "winnerId",
+        "player1Score",
+        "player2Score",
         p1:player1Id(id, fullName),
         p2:player2Id(id, fullName)
       `)
@@ -24,6 +26,8 @@ export async function GET() {
       round: m.round,
       matchNumber: m.matchNumber,
       winnerId: m.winnerId,
+      player1Score: m.player1Score,
+      player2Score: m.player2Score,
       p1Id: m.p1 ? m.p1.id : null,
       p1Name: m.p1 ? m.p1.fullName : null,
       p2Id: m.p2 ? m.p2.id : null,

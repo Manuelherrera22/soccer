@@ -12,6 +12,12 @@ export default function AdminDashboard() {
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Score Modal State
+  const [activeMatch, setActiveMatch] = useState<any>(null);
+  const [score1, setScore1] = useState<number | ''>('');
+  const [score2, setScore2] = useState<number | ''>('');
+  const [selectedWinner, setSelectedWinner] = useState<number | ''>('');
+
   useEffect(() => { fetchData(); }, []);
 
   const fetchData = async () => {
@@ -31,14 +37,36 @@ export default function AdminDashboard() {
     fetchData();
   };
 
-  const handleAdvance = async (matchId: number, winnerId: number, name: string) => {
-    if (!confirm(`¿Declarar a "${name}" como ganador?`)) return;
+  const openScoreModal = (match: any) => {
+    setActiveMatch(match);
+    setScore1('');
+    setScore2('');
+    setSelectedWinner('');
+  };
+
+  const submitScore = async () => {
+    if (score1 === '' || score2 === '' || selectedWinner === '') {
+      alert('Debes llenar los goles y seleccionar al ganador.');
+      return;
+    }
+
     const res = await fetch('/api/admin/advance', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ matchId, winnerId })
+      body: JSON.stringify({
+        matchId: activeMatch.matchId,
+        winnerId: Number(selectedWinner),
+        player1Score: Number(score1),
+        player2Score: Number(score2)
+      })
     });
-    if (res.ok) fetchData(); else alert('Error al avanzar jugador');
+
+    if (res.ok) {
+      setActiveMatch(null);
+      fetchData();
+    } else {
+      alert('Error al registrar resultado');
+    }
   };
 
   const downloadCSV = () => {
@@ -117,16 +145,18 @@ export default function AdminDashboard() {
                   <div key={round} className="bracket-round">
                     <div className="round-label">{ROUND_NAMES[round]}</div>
                     {rm.map((m: any) => (
-                      <div key={m.matchId} className="match-card">
-                        <div className={`match-player ${!m.winnerId && m.p1Id ? 'clickable' : ''} ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}
-                          onClick={() => !m.winnerId && m.p1Id && m.p2Id && handleAdvance(m.matchId, m.p1Id, m.p1Name)}>
+                      <div key={m.matchId} className="match-card" 
+                           onClick={() => !m.winnerId && m.p1Id && m.p2Id && openScoreModal(m)}
+                           style={{ cursor: (!m.winnerId && m.p1Id && m.p2Id) ? 'pointer' : 'default' }}>
+                        <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
                           {m.p1Id ? <span>{m.p1Name}</span> : <span className="tbd">TBD</span>}
+                          {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player1Score}</span>}
                           {m.winnerId === m.p1Id && <span>🏆</span>}
                         </div>
                         <div className="match-vs">VS</div>
-                        <div className={`match-player ${!m.winnerId && m.p2Id ? 'clickable' : ''} ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}
-                          onClick={() => !m.winnerId && m.p1Id && m.p2Id && handleAdvance(m.matchId, m.p2Id, m.p2Name)}>
+                        <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
                           {m.p2Id ? <span>{m.p2Name}</span> : <span className="tbd">TBD</span>}
+                          {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player2Score}</span>}
                           {m.winnerId === m.p2Id && <span>🏆</span>}
                         </div>
                       </div>
@@ -138,6 +168,38 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {activeMatch && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+          <div className="card" style={{ width: '90%', maxWidth: '400px' }}>
+            <h3 style={{ fontFamily: 'Orbitron', marginBottom: '1.5rem', textAlign: 'center' }}>Registrar Resultado</h3>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <span style={{ fontWeight: 600, width: '40%' }}>{activeMatch.p1Name}</span>
+              <input type="number" min="0" value={score1} onChange={e => setScore1(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ width: '60px', textAlign: 'center' }} />
+            </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <span style={{ fontWeight: 600, width: '40%' }}>{activeMatch.p2Name}</span>
+              <input type="number" min="0" value={score2} onChange={e => setScore2(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ width: '60px', textAlign: 'center' }} />
+            </div>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: '0.5rem' }}>¿Quién avanzó a la siguiente ronda?</label>
+              <select value={selectedWinner} onChange={e => setSelectedWinner(e.target.value)} className="input-field">
+                <option value="">-- Seleccionar Ganador --</option>
+                <option value={activeMatch.p1Id}>{activeMatch.p1Name}</option>
+                <option value={activeMatch.p2Id}>{activeMatch.p2Name}</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button className="btn-outline" style={{ flex: 1 }} onClick={() => setActiveMatch(null)}>Cancelar</button>
+              <button className="btn-purple" style={{ flex: 1 }} onClick={submitScore}>Guardar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

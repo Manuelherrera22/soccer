@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
-    const { matchId, winnerId } = await req.json();
+    const { matchId, winnerId, player1Score, player2Score } = await req.json();
 
     if (!matchId || !winnerId) {
       return NextResponse.json({ error: 'Missing matchId or winnerId' }, { status: 400 });
@@ -19,10 +19,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Match not found' }, { status: 404 });
     }
 
-    // Update winner
+    // Update winner and scores
     const { error: updateWinnerError } = await supabaseAdmin
       .from('matches')
-      .update({ winnerId })
+      .update({ 
+        winnerId,
+        player1Score: player1Score || 0,
+        player2Score: player2Score || 0
+      })
       .eq('id', matchId);
 
     if (updateWinnerError) throw updateWinnerError;

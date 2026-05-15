@@ -85,11 +85,13 @@ export default function BracketView() {
                   {rm.map(m => (
                     <div key={m.matchId} className={`match-card ${isHighlighted(m) ? 'highlighted' : ''}`}>
                       <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
-                        {m.p1Id ? <span>{m.p1Name} {m.p1LastName}</span> : <span className="tbd">Por definir</span>}
+                        {m.p1Id ? <span>{m.p1Name}</span> : <span className="tbd">Por definir</span>}
+                        {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player1Score}</span>}
                       </div>
                       <div className="match-vs">VS</div>
                       <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
-                        {m.p2Id ? <span>{m.p2Name} {m.p2LastName}</span> : <span className="tbd">Por definir</span>}
+                        {m.p2Id ? <span>{m.p2Name}</span> : <span className="tbd">Por definir</span>}
+                        {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player2Score}</span>}
                       </div>
                     </div>
                   ))}
