@@ -189,7 +189,7 @@ export default function AdminDashboard() {
 
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: '0.5rem' }}>¿Quién avanzó a la siguiente ronda?</label>
-              <select value={selectedWinner} onChange={e => setSelectedWinner(e.target.value)} className="input-field">
+              <select value={selectedWinner} onChange={e => setSelectedWinner(e.target.value ? Number(e.target.value) : '')} className="input-field">
                 <option value="">-- Seleccionar Ganador --</option>
                 <option value={activeMatch.p1Id}>{activeMatch.p1Name}</option>
                 <option value={activeMatch.p2Id}>{activeMatch.p2Name}</option>

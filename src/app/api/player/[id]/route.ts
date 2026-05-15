@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const playerId = Number(params.id);
+    const { id } = await params;
+    const playerId = Number(id);
     if (!playerId) return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
 
     // Fetch participant

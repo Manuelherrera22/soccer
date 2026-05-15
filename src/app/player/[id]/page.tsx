@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 
 const ROUND_NAMES: Record<number, string> = {
@@ -8,17 +8,18 @@ const ROUND_NAMES: Record<number, string> = {
   4: 'Cuartos de Final', 5: 'Semifinales', 6: 'Final', 7: 'Campeón'
 };
 
-export default function PlayerDashboard({ params }: { params: { id: string } }) {
+export default function PlayerDashboard({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/player/${params.id}`)
+    fetch(`/api/player/${resolvedParams.id}`)
       .then(res => res.json())
       .then(d => setData(d))
       .catch(e => console.error(e))
       .finally(() => setLoading(false));
-  }, [params.id]);
+  }, [resolvedParams.id]);
 
   if (loading) return (
     <div className="page-wrapper">
