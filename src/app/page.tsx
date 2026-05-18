@@ -36,18 +36,20 @@ function FloatingElements() {
 function ShieldLogo() {
   return (
     <div className="shield-logo">
-      <div className="outer" />
-      <div className="inner">
-        <span className="ball">⚽</span>
-        <span className="controller">🎮</span>
-        <span className="label-gaming">GAMING</span>
-        <span className="label-cup">CUP</span>
-        <div className="sponsors">
-          <span>DAVIVIENDA</span>
-          <span className="divider" />
-          <span>TIGO SPORTS</span>
-        </div>
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="Elite Gaming Cup" />
+    </div>
+  );
+}
+
+function SponsorLogos() {
+  return (
+    <div className="sponsor-logos">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/davivienda.png" alt="Davivienda" />
+      <span className="divider" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/tigo.png" alt="Tigo Sports" />
     </div>
   );
 }
@@ -108,6 +110,7 @@ export default function Home() {
           <div className="form-card success-card" style={{ textAlign: 'center' }}>
             <div className="success-icon">🏆</div>
             <ShieldLogo />
+            <SponsorLogos />
             <h1 className="hero-heading" style={{ fontSize: '1.6rem' }}>¡Inscripción Exitosa!</h1>
             <p className="hero-desc">Tu lugar en la Gaming Cup está asegurado.</p>
             <div className="alert alert-success">✅ Pronto anunciaremos las llaves del torneo.</div>
@@ -124,6 +127,7 @@ export default function Home() {
       <div className="neon-line neon-line-left" /><div className="neon-line neon-line-right" />
       <div className="container-centered">
         <ShieldLogo />
+        <SponsorLogos />
         <h1 className="hero-heading">Inscríbete al Torneo</h1>
         <p className="hero-desc">Registrate y asegura tu lugar en la Gaming Cup. Llena el formulario para inscribirte y participar en el torneo.</p>
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>

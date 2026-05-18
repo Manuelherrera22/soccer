@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Russo+One&family=Kelly+Slab&display=swap');
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('/fonts/NotoSans-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 :root {
   --purple-deep: #1a0533;
@@ -23,7 +30,7 @@ html, body { min-height: 100vh; overflow-x: hidden; }
 
 body {
   color: var(--white);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Noto Sans', 'Inter', system-ui, sans-serif;
   background: var(--purple-deep);
   background-image:
     radial-gradient(ellipse 80% 60% at 50% 30%, rgba(100, 30, 180, 0.5), transparent 70%),
@@ -117,48 +124,60 @@ input, select { font-family: inherit; }
   padding: 2rem 1.5rem;
 }
 
-/* ── Shield Logo ── */
+/* ── Shield Logo (image-based) ── */
 .shield-logo {
-  width: 160px; height: 180px;
-  margin: 0 auto 1rem;
+  width: 200px;
+  margin: 0 auto 1.5rem;
   position: relative;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logo-float 4s ease-in-out infinite;
 }
-.shield-logo .outer {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, #4a1a8a, #2d1060, #1a0533);
-  clip-path: polygon(50% 0%, 95% 12%, 100% 65%, 50% 100%, 0% 65%, 5% 12%);
+.shield-logo img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 30px rgba(168, 85, 247, 0.35));
+  transition: filter 0.3s;
 }
-.shield-logo .inner {
-  position: absolute; inset: 5px;
-  background: linear-gradient(180deg, #1f0a45, #12062a);
-  clip-path: polygon(50% 0%, 95% 12%, 100% 65%, 50% 100%, 0% 65%, 5% 12%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2px; padding-top: 8px;
+.shield-logo:hover img {
+  filter: drop-shadow(0 6px 40px rgba(168, 85, 247, 0.55));
 }
-.shield-logo .ball { font-size: 1.4rem; margin-bottom: -4px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
-.shield-logo .controller { font-size: 2.2rem; filter: drop-shadow(0 0 12px rgba(168,85,247,0.5)); }
-.shield-logo .label-gaming {
-  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 0.65rem;
-  letter-spacing: 3px; color: var(--white); text-transform: uppercase;
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
-.shield-logo .label-cup {
-  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem;
-  color: var(--white); text-shadow: 0 0 15px rgba(168,85,247,0.5);
+
+/* ── Sponsor Logos Row ── */
+.sponsor-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
-.shield-logo .sponsors {
-  display: flex; gap: 6px; align-items: center; margin-top: 4px;
-  font-size: 0.5rem; color: var(--text-muted); letter-spacing: 1px;
+.sponsor-logos img {
+  height: 36px;
+  width: auto;
+  opacity: 0.85;
+  transition: opacity 0.3s, transform 0.3s;
+  filter: brightness(1.1);
 }
-.shield-logo .sponsors .divider {
-  width: 1px; height: 12px; background: rgba(255,255,255,0.2);
+.sponsor-logos img:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+.sponsor-logos .divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.15);
 }
 
 /* ── Hero Text ── */
 .hero-heading {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Russo One', 'Orbitron', sans-serif;
   font-size: clamp(1.6rem, 5vw, 2.4rem);
-  font-weight: 900;
+  font-weight: 400;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -214,9 +233,9 @@ input, select { font-family: inherit; }
 }
 
 .form-section-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-family: 'Kelly Slab', 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
   color: var(--white);
   margin-bottom: 1.25rem;
 }
@@ -426,8 +445,8 @@ input, select { font-family: inherit; }
   display: block; width: 100%;
   padding: 1rem;
   margin-top: 1.5rem;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 800;
+  font-family: 'Russo One', 'Orbitron', sans-serif;
+  font-weight: 400;
   font-size: 0.85rem;
   letter-spacing: 2px;
   text-transform: uppercase;
