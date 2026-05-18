@@ -4,10 +4,14 @@ import { supabaseAdmin } from '@/lib/supabase';
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const { fullName, tariff, birthDate, phone, email, isDaviviendaClient, isTigoClient, isMinor, guardianName, guardianPhone, guardianDui, acceptedTerms } = data;
+    const { fullName, birthDate, phone, email, isDaviviendaClient, isTigoClient, isMinor, guardianName, guardianPhone, guardianDui, acceptedTerms } = data;
 
-    if (!fullName || !tariff || !birthDate || !phone || !email) {
+    if (!fullName || !birthDate || !phone || !email) {
       return NextResponse.json({ error: 'Todos los campos son obligatorios.' }, { status: 400 });
+    }
+
+    if (!isDaviviendaClient && !isTigoClient) {
+      return NextResponse.json({ error: 'Debes seleccionar al menos Davivienda o Tigo.' }, { status: 400 });
     }
 
     if (!acceptedTerms) {
@@ -46,7 +50,6 @@ export async function POST(req: Request) {
       .insert([
         {
           fullName,
-          tariff,
           birthDate,
           phone,
           email,

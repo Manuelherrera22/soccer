@@ -351,6 +351,54 @@ input, select { font-family: inherit; }
 
 .checkbox-label strong { font-weight: 700; color: var(--white); }
 
+/* ── Sponsor Selection (Required) ── */
+.sponsor-group {
+  padding: 1rem 1.2rem;
+  background: rgba(123, 47, 242, 0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.sponsor-group .label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0.6rem;
+}
+.required-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 4px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+.sponsor-error {
+  border-color: rgba(255, 64, 96, 0.5) !important;
+  background: rgba(255, 64, 96, 0.05) !important;
+  animation: shake 0.4s ease;
+}
+.sponsor-error-msg {
+  font-size: 0.75rem;
+  color: #ff8090;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
 /* ── Guardian Section (Minor) ── */
 .guardian-section {
   margin: 1rem 0;

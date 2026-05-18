@@ -55,11 +55,12 @@ function ShieldLogo() {
 export default function Home() {
   const [stats, setStats] = useState({ total: 0, remaining: 128 });
   const [form, setForm] = useState({
-    fullName: '', tariff: '', birthDate: '', phone: '', email: '',
+    fullName: '', birthDate: '', phone: '', email: '',
     isDaviviendaClient: false, isTigoClient: false, isMinor: false,
     guardianName: '', guardianPhone: '', guardianDui: '',
     acceptedTerms: false,
   });
+  const [sponsorError, setSponsorError] = useState(false);
   const [status, setStatus] = useState({ loading: false, error: '', success: false });
 
   useEffect(() => { fetchStats(); }, []);
@@ -78,8 +79,13 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSponsorError(false);
     setStatus({ loading: true, error: '', success: false });
-    if (!form.tariff) { setStatus({ loading: false, error: 'Selecciona tu tarifa.', success: false }); return; }
+    if (!form.isDaviviendaClient && !form.isTigoClient) {
+      setSponsorError(true);
+      setStatus({ loading: false, error: 'Debes seleccionar al menos Davivienda o Tigo.', success: false });
+      return;
+    }
     try {
       const res = await fetch('/api/register', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form),
@@ -134,24 +140,7 @@ export default function Home() {
               <input type="text" name="fullName" className="input-field" required placeholder="Ingresa tu nombre completo" value={form.fullName} onChange={handleText} />
             </div>
 
-            <div className="form-group">
-              <span className="label">Selecciona tu tarifa</span>
-              <div className="tariff-row">
-                <label className="tariff-option">
-                  <input type="radio" name="tariff" value="general" checked={form.tariff === 'general'} onChange={handleText} />
-                  <div className="tariff-label">Tarifa General</div>
-                  <div className="tariff-price">$50</div>
-                  <span className="check-icon">✓</span>
-                </label>
-                <label className="tariff-option">
-                  <input type="radio" name="tariff" value="client" checked={form.tariff === 'client'} onChange={handleText} />
-                  <div className="tariff-label">Tarifa Clientes<br />Davivienda/Tigo</div>
-                  <div className="tariff-price">$40</div>
-                  <div className="tariff-discount">20% Descuento</div>
-                  <span className="check-icon">✓</span>
-                </label>
-              </div>
-            </div>
+
 
             <div className="form-group">
               <span className="label">Fecha de Nacimiento</span>
@@ -168,7 +157,9 @@ export default function Home() {
               <input type="email" name="email" className="input-field" required placeholder="tucorreo@email.com" value={form.email} onChange={handleText} />
             </div>
 
-            <div className="checkbox-group">
+            <div className={`checkbox-group sponsor-group${sponsorError ? ' sponsor-error' : ''}`}>
+              <span className="label">Selecciona tu patrocinador <span className="required-badge">Obligatorio</span></span>
+              {sponsorError && <div className="sponsor-error-msg">⚠️ Debes elegir al menos Davivienda o Tigo</div>}
               <label className="checkbox-label">
                 <input type="checkbox" name="isDaviviendaClient" checked={form.isDaviviendaClient} onChange={handleCheck} />
                 Soy cliente de <strong>Davivienda</strong>
