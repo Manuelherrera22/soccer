@@ -137,7 +137,6 @@ input, select { font-family: inherit; }
 .shield-logo img {
   width: 100%;
   height: auto;
-  mix-blend-mode: screen;
   filter: drop-shadow(0 4px 30px rgba(168, 85, 247, 0.35));
   transition: filter 0.3s;
 }
@@ -147,32 +146,6 @@ input, select { font-family: inherit; }
 @keyframes logo-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
-}
-
-/* ── Sponsor Logos Row ── */
-.sponsor-logos {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.sponsor-logos img {
-  height: 36px;
-  width: auto;
-  opacity: 0.85;
-  mix-blend-mode: screen;
-  transition: opacity 0.3s, transform 0.3s;
-  filter: brightness(1.1);
-}
-.sponsor-logos img:hover {
-  opacity: 1;
-  transform: scale(1.08);
-}
-.sponsor-logos .divider {
-  width: 1px;
-  height: 28px;
-  background: rgba(255,255,255,0.15);
 }
 
 /* ── Hero Text ── */

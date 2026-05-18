@@ -18,38 +18,29 @@ function Sparkles() {
 
 function FloatingElements() {
   const els = [
-    { emoji: '⚽', top: '8%', left: '5%', delay: '0s', size: '2.5rem' },
-    { emoji: '⚽', top: '75%', left: '3%', delay: '4s', size: '2rem' },
-    { emoji: '🎮', top: '15%', right: '4%', delay: '2s', size: '2rem' },
-    { emoji: '⚽', top: '60%', right: '6%', delay: '6s', size: '1.8rem' },
-    { emoji: '🎮', top: '85%', right: '10%', delay: '3s', size: '1.5rem' },
+    { src: '/Balon 1.png', top: '8%', left: '5%', delay: '0s', size: '4rem' },
+    { src: '/Balon 2.png', top: '75%', left: '3%', delay: '4s', size: '3.5rem' },
+    { src: '/Elemento 1.png', top: '15%', right: '4%', delay: '2s', size: '3rem' },
+    { src: '/Balon 1.png', top: '60%', right: '6%', delay: '6s', size: '3rem' },
+    { src: '/Elemento 1.png', top: '85%', right: '10%', delay: '3s', size: '2.5rem' },
   ];
   return (
     <div className="floating-elements">
       {els.map((el, i) => (
-        <div key={i} className="floating-el" style={{ top: el.top, left: el.left, right: (el as any).right, animationDelay: el.delay, fontSize: el.size }}>{el.emoji}</div>
+        <div key={i} className="floating-el" style={{ top: el.top, left: el.left, right: (el as any).right, animationDelay: el.delay, width: el.size }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={el.src} alt="" style={{ width: '100%', height: 'auto', opacity: 0.8 }} />
+        </div>
       ))}
     </div>
   );
 }
 
-function ShieldLogo() {
+function MainLogo() {
   return (
-    <div className="shield-logo">
+    <div className="shield-logo" style={{ width: '320px', marginBottom: '2rem' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/logo.png" alt="Elite Gaming Cup" />
-    </div>
-  );
-}
-
-function SponsorLogos() {
-  return (
-    <div className="sponsor-logos">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/davivienda.png" alt="Davivienda" />
-      <span className="divider" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/tigo.png" alt="Tigo Sports" />
+      <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup - Davivienda & Tigo" />
     </div>
   );
 }
@@ -109,8 +100,7 @@ export default function Home() {
         <div className="success-screen">
           <div className="form-card success-card" style={{ textAlign: 'center' }}>
             <div className="success-icon">🏆</div>
-            <ShieldLogo />
-            <SponsorLogos />
+            <MainLogo />
             <h1 className="hero-heading" style={{ fontSize: '1.6rem' }}>¡Inscripción Exitosa!</h1>
             <p className="hero-desc">Tu lugar en la Gaming Cup está asegurado.</p>
             <div className="alert alert-success">✅ Pronto anunciaremos las llaves del torneo.</div>
@@ -126,8 +116,7 @@ export default function Home() {
       <Sparkles /><FloatingElements />
       <div className="neon-line neon-line-left" /><div className="neon-line neon-line-right" />
       <div className="container-centered">
-        <ShieldLogo />
-        <SponsorLogos />
+        <MainLogo />
         <h1 className="hero-heading">Inscríbete al Torneo</h1>
         <p className="hero-desc">Registrate y asegura tu lugar en la Gaming Cup. Llena el formulario para inscribirte y participar en el torneo.</p>
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
@@ -143,8 +132,6 @@ export default function Home() {
               <span className="label">Nombre Completo</span>
               <input type="text" name="fullName" className="input-field" required placeholder="Ingresa tu nombre completo" value={form.fullName} onChange={handleText} />
             </div>
-
-
 
             <div className="form-group">
               <span className="label">Fecha de Nacimiento</span>
