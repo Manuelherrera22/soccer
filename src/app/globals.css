@@ -137,6 +137,7 @@ input, select { font-family: inherit; }
 .shield-logo img {
   width: 100%;
   height: auto;
+  mix-blend-mode: screen;
   filter: drop-shadow(0 4px 30px rgba(168, 85, 247, 0.35));
   transition: filter 0.3s;
 }
@@ -160,6 +161,7 @@ input, select { font-family: inherit; }
   height: 36px;
   width: auto;
   opacity: 0.85;
+  mix-blend-mode: screen;
   transition: opacity 0.3s, transform 0.3s;
   filter: brightness(1.1);
 }
