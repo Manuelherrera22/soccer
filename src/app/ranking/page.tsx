@@ -46,18 +46,24 @@ export default function RankingPage() {
   return (
     <div className="page-wrapper">
       <Particles />
-      <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div className="logo-shield" style={{ width: '100px', height: '115px' }}>
-            <div className="shield-bg" />
-            <div className="shield-inner">
-              <span style={{ fontSize: '1.8rem' }}>🏆</span>
-              <span className="shield-sub" style={{ fontSize: '0.6rem' }}>RANKING</span>
-            </div>
-          </div>
-          <h1 className="hero-title">— Global Ranking —</h1>
-          <p className="hero-subtitle">Tabla de Posiciones Oficial por Goles y Victorias</p>
+      <div className="bracket-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <Link href="/" className="back-btn" title="Volver al inicio">
+            ←
+          </Link>
+          <Link href="/" className="shield-logo" style={{ width: '150px', cursor: 'pointer', display: 'block' }}>
+            <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup" />
+          </Link>
         </div>
+        <div className="search-container">
+          <div style={{ textAlign: 'right' }}>
+            <h1 className="hero-title" style={{ margin: 0, fontSize: '1.8rem' }}>— Global Ranking —</h1>
+            <p style={{ color: 'var(--gold)', margin: 0, fontSize: '0.9rem', letterSpacing: '1px' }}>TABLA OFICIAL DE POSICIONES</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container" style={{ marginTop: '2rem' }}>
 
         <div className="card" style={{ maxWidth: '900px', margin: '0 auto' }}>
           <div className="table-wrap">

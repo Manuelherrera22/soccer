@@ -624,13 +624,13 @@ input, select { font-family: inherit; }
 
 /* ── Zoom Controls ── */
 .zoom-controls {
-  position: absolute;
+  position: fixed;
   bottom: 2rem;
   right: 2rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  z-index: 100;
+  z-index: 9999;
 }
 .zoom-btn {
   width: 40px;
