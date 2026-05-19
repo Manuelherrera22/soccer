@@ -94,10 +94,9 @@ export default function BracketView() {
         ) : (
           <TransformWrapper 
             initialScale={1} 
-            minScale={0.15} 
+            minScale={0.1} 
             maxScale={2} 
             centerOnInit={true}
-            limitToBounds={false}
           >
             <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - 150px)', overflow: 'hidden' }}>
               <Controls />
