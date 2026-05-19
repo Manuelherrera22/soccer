@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
+import Link from 'next/link';
 
 const Controls = () => {
   const { zoomIn, zoomOut, resetTransform } = useControls();
@@ -72,8 +73,13 @@ export default function BracketView() {
       <div className="container-full">
         {/* Sticky Header with Search */}
         <div className="bracket-header">
-          <div className="shield-logo" style={{ width: '150px' }}>
-            <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <Link href="/" className="back-btn" title="Volver al inicio">
+              ←
+            </Link>
+            <Link href="/" className="shield-logo" style={{ width: '150px', cursor: 'pointer', display: 'block' }}>
+              <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup" />
+            </Link>
           </div>
           <div className="search-container">
             <h1 className="hero-title">— Partidos —</h1>
