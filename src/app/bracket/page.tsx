@@ -57,46 +57,102 @@ export default function BracketView() {
   return (
     <div className="page-wrapper">
       <Particles />
-      <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div className="shield-logo" style={{ width: '220px', margin: '0 auto 1rem' }}>
+      <div className="container-full">
+        {/* Sticky Header with Search */}
+        <div className="bracket-header">
+          <div className="shield-logo" style={{ width: '150px' }}>
             <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup" />
           </div>
-          <h1 className="hero-title">— Partidos —</h1>
-          <p className="hero-subtitle">Sigue el progreso de la Elite Gaming Cup en vivo</p>
-          <input
-            type="text" className="form-control"
-            placeholder="🔍 Busca a un jugador..."
-            style={{ maxWidth: '400px', margin: '0 auto' }}
-            value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-          />
+          <div className="search-container">
+            <h1 className="hero-title">— Partidos —</h1>
+            <input
+              type="text" className="form-control bracket-search"
+              placeholder="🔍 Busca a un jugador..."
+              value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
 
         {matches.length === 0 ? (
-          <div className="card" style={{ textAlign: 'center', maxWidth: '500px', margin: '0 auto' }}>
+          <div className="card" style={{ textAlign: 'center', maxWidth: '500px', margin: '4rem auto' }}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⏳</div>
             <h3 className="section-title" style={{ justifyContent: 'center' }}>Las llaves aún no han sido generadas</h3>
             <p style={{ color: 'var(--text-muted)' }}>Vuelve pronto para conocer los enfrentamientos.</p>
           </div>
         ) : (
-          <div className="bracket-scroll">
-            {[1, 2, 3, 4, 5, 6, 7].map((round, rIndex, arr) => {
+          <div className="bracket-scroll split-bracket">
+            {/* Left Side */}
+            {[1, 2, 3, 4, 5, 6].map((round) => {
               const rm = matches.filter(m => m.round === round);
-              if (!rm.length) return null;
+              const half = Math.ceil(rm.length / 2);
+              const sideMatches = rm.slice(0, half);
+              if (!sideMatches.length) return null;
+              
               return (
-                <div key={round} className="bracket-round">
-                  <div className="round-label">{ROUND_NAMES[round] || `Ronda ${round}`}</div>
+                <div key={`left-${round}`} className="bracket-round left-round">
+                  <div className="round-label">{ROUND_NAMES[round]}</div>
                   <div className="round-matches">
-                    {rm.map((m, index) => (
+                    {sideMatches.map((m, index) => (
                       <div key={m.matchId} className={`match-wrapper ${index % 2 === 0 ? 'top-match' : 'bottom-match'}`}>
                         <div className={`match-card ${isHighlighted(m) ? 'highlighted' : ''}`}>
-                          <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
+                          <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''}`}>
                             <span className="player-name">{m.p1Id ? m.p1Name : <span className="tbd">Por definir</span>}</span>
                             {m.winnerId && <span className="player-score">{m.player1Score}</span>}
                           </div>
-                          <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
+                          <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''}`}>
                             <span className="player-name">{m.p2Id ? m.p2Name : <span className="tbd">Por definir</span>}</span>
                             {m.winnerId && <span className="player-score">{m.player2Score}</span>}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Center (Final) */}
+            <div className="bracket-round center-round">
+              <div className="round-label">👑 GRAN FINAL 👑</div>
+              <div className="round-matches" style={{ justifyContent: 'center' }}>
+                {matches.filter(m => m.round === 7).map(m => (
+                  <div key={m.matchId} className="match-wrapper center-match">
+                    <div className={`match-card final-card ${isHighlighted(m) ? 'highlighted' : ''}`}>
+                      <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''}`}>
+                        <span className="player-name">{m.p1Id ? m.p1Name : <span className="tbd">Finalista 1</span>}</span>
+                        {m.winnerId && <span className="player-score">{m.player1Score}</span>}
+                      </div>
+                      <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''}`}>
+                        <span className="player-name">{m.p2Id ? m.p2Name : <span className="tbd">Finalista 2</span>}</span>
+                        {m.winnerId && <span className="player-score">{m.player2Score}</span>}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Side */}
+            {[6, 5, 4, 3, 2, 1].map((round) => {
+              const rm = matches.filter(m => m.round === round);
+              const half = Math.ceil(rm.length / 2);
+              const sideMatches = rm.slice(half);
+              if (!sideMatches.length) return null;
+              
+              return (
+                <div key={`right-${round}`} className="bracket-round right-round">
+                  <div className="round-label">{ROUND_NAMES[round]}</div>
+                  <div className="round-matches">
+                    {sideMatches.map((m, index) => (
+                      <div key={m.matchId} className={`match-wrapper right-wrapper ${index % 2 === 0 ? 'top-match' : 'bottom-match'}`}>
+                        <div className={`match-card ${isHighlighted(m) ? 'highlighted' : ''}`}>
+                          <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''}`}>
+                            {m.winnerId && <span className="player-score score-left">{m.player1Score}</span>}
+                            <span className="player-name align-right">{m.p1Id ? m.p1Name : <span className="tbd">Por definir</span>}</span>
+                          </div>
+                          <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''}`}>
+                            {m.winnerId && <span className="player-score score-left">{m.player2Score}</span>}
+                            <span className="player-name align-right">{m.p2Id ? m.p2Name : <span className="tbd">Por definir</span>}</span>
                           </div>
                         </div>
                       </div>

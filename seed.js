@@ -16,9 +16,9 @@ async function seed() {
     const surnames = ["Garcia", "Rodriguez", "Gonzalez", "Fernandez", "Lopez", "Martinez", "Sanchez", "Perez", "Gomez", "Martin", "Ruiz", "Hernandez", "Diaz", "Alvarez", "Moreno", "Munoz", "Romero", "Alonso", "Gutierrez", "Navarro"];
 
     let participants = [];
-    console.log("Generando 64 participantes falsos...");
+    console.log("Generando 128 participantes falsos...");
     
-    for (let i = 0; i < 64; i++) {
+    for (let i = 0; i < 128; i++) {
         const name = `${names[Math.floor(Math.random() * names.length)]} ${surnames[Math.floor(Math.random() * surnames.length)]}`;
         const isMinor = Math.random() > 0.8;
         
@@ -43,7 +43,7 @@ async function seed() {
     if (error) {
         console.error("Error al insertar los participantes:", error);
     } else {
-        console.log(`✅ ¡Se insertaron 64 participantes falsos exitosamente!`);
+        console.log(`✅ ¡Se insertaron 128 participantes falsos exitosamente!`);
         console.log("Revisa http://localhost:3005/admin y dale click a 'Generar Llaves'");
     }
 }

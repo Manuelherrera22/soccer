@@ -23,9 +23,9 @@ export async function POST() {
     
     const shuffled = [...(participants || [])].sort(() => 0.5 - Math.random());
     
-    // Create matches for a 64-player bracket (32, 16, 8, 4, 2, 1)
+    // Create matches for a 128-player bracket (64, 32, 16, 8, 4, 2, 1)
     const matchInserts = [];
-    const rounds = [32, 16, 8, 4, 2, 1];
+    const rounds = [64, 32, 16, 8, 4, 2, 1];
     let matchNumberGlobal = 1;
 
     for (let r = 0; r < rounds.length; r++) {
