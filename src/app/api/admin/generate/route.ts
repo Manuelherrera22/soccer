@@ -23,15 +23,24 @@ export async function POST() {
     
     const shuffled = [...(participants || [])].sort(() => 0.5 - Math.random());
     
-    // Create 64 matches for Round 1
+    // Create matches for a 64-player bracket (32, 16, 8, 4, 2, 1)
     const matchInserts = [];
-    for (let i = 0; i < 64; i++) {
-      matchInserts.push({
-        round: 1,
-        matchNumber: i + 1,
-        player1Id: shuffled[i * 2]?.id || null,
-        player2Id: shuffled[i * 2 + 1]?.id || null
-      });
+    const rounds = [32, 16, 8, 4, 2, 1];
+    let matchNumberGlobal = 1;
+
+    for (let r = 0; r < rounds.length; r++) {
+      const numMatches = rounds[r];
+      const roundNum = r + 1;
+      
+      for (let i = 0; i < numMatches; i++) {
+        matchInserts.push({
+          round: roundNum,
+          matchNumber: i + 1,
+          player1Id: roundNum === 1 ? (shuffled[i * 2]?.id || null) : null,
+          player2Id: roundNum === 1 ? (shuffled[i * 2 + 1]?.id || null) : null
+        });
+        matchNumberGlobal++;
+      }
     }
 
     const { error: insertError } = await supabaseAdmin

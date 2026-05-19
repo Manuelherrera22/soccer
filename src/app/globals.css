@@ -545,34 +545,75 @@ input, select { font-family: inherit; }
 .admin-bar .actions { display: flex; gap: 0.75rem; }
 
 /* ── Bracket ── */
-.bracket-scroll { display: flex; gap: 2.5rem; overflow-x: auto; padding: 2rem 0.5rem; }
-.bracket-round { display: flex; flex-direction: column; gap: 1.5rem; justify-content: space-around; min-width: 250px; }
+.bracket-scroll { 
+  display: flex; gap: 4rem; overflow-x: auto; padding: 2rem 1rem; align-items: stretch; min-height: 80vh; 
+}
+.bracket-round { 
+  display: flex; flex-direction: column; min-width: 240px; position: relative; 
+}
 .round-label {
-  font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700;
+  font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700;
   letter-spacing: 2px; text-transform: uppercase; text-align: center;
-  color: var(--gold); margin-bottom: 0.5rem; padding-bottom: 0.5rem;
+  color: var(--gold); margin-bottom: 1rem; padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255,215,0,0.12);
+  position: sticky; top: 0; z-index: 10;
 }
+.round-matches {
+  display: flex; flex-direction: column; flex: 1;
+}
+
+.match-wrapper {
+  flex: 1; /* Key for perfect line alignment */
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  min-height: 60px; /* Compact height */
+  padding: 0.5rem 0;
+}
+
+/* ── Tournament Tree Connectors ── */
+.bracket-round:not(:last-child) .match-wrapper.top-match::after {
+  content: ''; position: absolute; right: -2rem; width: 2rem;
+  top: 50%; height: 50%; 
+  border-top: 2px solid rgba(123, 47, 242, 0.4);
+  border-right: 2px solid rgba(123, 47, 242, 0.4);
+  border-top-right-radius: 4px;
+}
+.bracket-round:not(:last-child) .match-wrapper.bottom-match::after {
+  content: ''; position: absolute; right: -2rem; width: 2rem;
+  bottom: 50%; height: 50%; 
+  border-bottom: 2px solid rgba(123, 47, 242, 0.4);
+  border-right: 2px solid rgba(123, 47, 242, 0.4);
+  border-bottom-right-radius: 4px;
+}
+.bracket-round:not(:first-child) .match-wrapper::before {
+  content: ''; position: absolute; left: -2rem; width: 2rem;
+  top: 50%; border-bottom: 2px solid rgba(123, 47, 242, 0.4);
+}
+
+/* ── Match Card ── */
 .match-card {
-  background: rgba(15,10,40,0.5); border: 1px solid var(--glass-border);
-  border-radius: 10px; overflow: hidden; transition: all 0.3s;
+  width: 100%;
+  background: var(--glass-bg); 
+  border: 1px solid var(--glass-border);
+  border-radius: 6px; overflow: hidden; transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  position: relative; z-index: 2; /* keep above lines */
 }
-.match-card:hover { border-color: var(--purple-bright); }
-.match-card.highlighted { border-color: #00e5ff !important; box-shadow: 0 0 18px rgba(0,229,255,0.2); }
-.match-vs {
-  text-align: center; font-family: 'Orbitron', sans-serif; font-size: 0.55rem;
-  font-weight: 700; color: var(--gold); padding: 2px 0;
-  background: rgba(255,215,0,0.04); letter-spacing: 2px;
-}
+.match-card:hover { border-color: var(--purple-bright); transform: scale(1.02); }
+.match-card.highlighted { border-color: #00e5ff !important; box-shadow: 0 0 18px rgba(0,229,255,0.3); z-index: 5; }
+
 .match-player {
-  padding: 0.65rem 0.85rem; display: flex; justify-content: space-between;
-  align-items: center; font-size: 0.8rem; transition: background 0.2s;
+  padding: 0.4rem 0.6rem; display: flex; justify-content: space-between;
+  align-items: center; font-size: 0.75rem; transition: background 0.2s;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
-.match-player.clickable { cursor: pointer; }
-.match-player.clickable:hover { background: rgba(123,47,242,0.1); }
-.match-player.winner { font-weight: 700; color: var(--gold); background: rgba(255,215,0,0.05); }
-.match-player.loser { opacity: 0.3; }
-.match-player .tbd { color: #444460; font-style: italic; }
+.match-player:last-child { border-bottom: none; }
+.match-player.winner { font-weight: 700; color: var(--gold); background: rgba(255,215,0,0.06); }
+.match-player.loser { opacity: 0.4; }
+.match-player .tbd { color: #555570; font-style: italic; }
+
+.player-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.player-score { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 800; }
 
 /* ── Responsive ── */
 @media (max-width: 640px) {

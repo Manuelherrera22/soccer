@@ -59,12 +59,8 @@ export default function BracketView() {
       <Particles />
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div className="logo-shield" style={{ width: '100px', height: '115px' }}>
-            <div className="shield-bg" />
-            <div className="shield-inner">
-              <span style={{ fontSize: '1.8rem' }}>🎮</span>
-              <span className="shield-sub" style={{ fontSize: '0.6rem' }}>GAMING CUP</span>
-            </div>
+          <div className="shield-logo" style={{ width: '220px', margin: '0 auto 1rem' }}>
+            <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup" />
           </div>
           <h1 className="hero-title">— Partidos —</h1>
           <p className="hero-subtitle">Sigue el progreso de la Elite Gaming Cup en vivo</p>
@@ -84,25 +80,28 @@ export default function BracketView() {
           </div>
         ) : (
           <div className="bracket-scroll">
-            {[1, 2, 3, 4, 5, 6, 7].map(round => {
+            {[1, 2, 3, 4, 5, 6, 7].map((round, rIndex, arr) => {
               const rm = matches.filter(m => m.round === round);
               if (!rm.length) return null;
               return (
                 <div key={round} className="bracket-round">
                   <div className="round-label">{ROUND_NAMES[round] || `Ronda ${round}`}</div>
-                  {rm.map(m => (
-                    <div key={m.matchId} className={`match-card ${isHighlighted(m) ? 'highlighted' : ''}`}>
-                      <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
-                        {m.p1Id ? <span>{m.p1Name}</span> : <span className="tbd">Por definir</span>}
-                        {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player1Score}</span>}
+                  <div className="round-matches">
+                    {rm.map((m, index) => (
+                      <div key={m.matchId} className={`match-wrapper ${index % 2 === 0 ? 'top-match' : 'bottom-match'}`}>
+                        <div className={`match-card ${isHighlighted(m) ? 'highlighted' : ''}`}>
+                          <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
+                            <span className="player-name">{m.p1Id ? m.p1Name : <span className="tbd">Por definir</span>}</span>
+                            {m.winnerId && <span className="player-score">{m.player1Score}</span>}
+                          </div>
+                          <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
+                            <span className="player-name">{m.p2Id ? m.p2Name : <span className="tbd">Por definir</span>}</span>
+                            {m.winnerId && <span className="player-score">{m.player2Score}</span>}
+                          </div>
+                        </div>
                       </div>
-                      <div className="match-vs">VS</div>
-                      <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
-                        {m.p2Id ? <span>{m.p2Name}</span> : <span className="tbd">Por definir</span>}
-                        {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player2Score}</span>}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               );
             })}
