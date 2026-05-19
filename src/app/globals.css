@@ -588,7 +588,7 @@ input, select { font-family: inherit; }
 
 /* ── Bracket ── */
 .bracket-scroll { 
-  display: flex; gap: 4rem; overflow-x: auto; padding: 2rem 1rem; align-items: stretch; min-height: 80vh; 
+  display: flex; gap: 4rem; padding: 2rem 1rem; align-items: stretch; min-height: 80vh; 
 }
 .bracket-round { 
   display: flex; flex-direction: column; min-width: 240px; position: relative; 
@@ -598,10 +598,42 @@ input, select { font-family: inherit; }
   letter-spacing: 2px; text-transform: uppercase; text-align: center;
   color: var(--gold); margin-bottom: 1rem; padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255,215,0,0.12);
-  position: sticky; top: 80px; z-index: 10;
 }
 .round-matches {
   display: flex; flex-direction: column; flex: 1;
+}
+
+/* ── Zoom Controls ── */
+.zoom-controls {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 100;
+}
+.zoom-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(24, 24, 27, 0.9);
+  border: 1px solid var(--glass-border);
+  color: var(--gold);
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+.zoom-btn:hover {
+  background: var(--purple-bright);
+  color: white;
+  border-color: var(--purple-bright);
 }
 
 .match-wrapper {
