@@ -738,9 +738,25 @@ input, select { font-family: inherit; }
 .align-right { text-align: right; width: 100%; }
 
 /* ── Responsive ── */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+.header-title-box {
+  text-align: right;
+}
+
 @media (max-width: 768px) {
-  .bracket-header { flex-direction: column; padding: 1.5rem 1rem; gap: 1.2rem; }
-  .search-container { flex-direction: column; width: 100%; gap: 1rem; }
+  .bracket-header { flex-direction: column; padding: 1.5rem 1rem; gap: 1.2rem; align-items: center; }
+  .header-left { max-width: 100%; justify-content: center; }
+  .back-btn { position: absolute; left: 0; }
+  .shield-logo { margin: 0 auto; }
+  .search-container { flex-direction: column; width: 100%; gap: 1rem; align-items: center; }
+  .header-title-box { text-align: center; width: 100%; }
   .bracket-search { min-width: 100%; }
 }
 @media (max-width: 640px) {
