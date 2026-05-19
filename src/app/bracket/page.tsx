@@ -3,10 +3,13 @@
 import { useState, useEffect, useMemo } from 'react';
 
 function Particles() {
-  const particles = useMemo(() => Array.from({ length: 25 }, (_, i) => ({
-    id: i, left: Math.random() * 100, delay: Math.random() * 8,
-    duration: 6 + Math.random() * 8, size: 2 + Math.random() * 3,
-  })), []);
+  const [particles, setParticles] = useState<any[]>([]);
+  useEffect(() => {
+    setParticles(Array.from({ length: 25 }, (_, i) => ({
+      id: i, left: Math.random() * 100, delay: Math.random() * 8,
+      duration: 6 + Math.random() * 8, size: 2 + Math.random() * 3,
+    })));
+  }, []);
   return (
     <div className="particles">
       {particles.map(p => (
@@ -34,7 +37,12 @@ export default function BracketView() {
   const fetchData = async () => {
     try {
       const res = await fetch('/api/bracket');
-      setMatches(await res.json());
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setMatches(data);
+      } else {
+        console.error('Expected array, got:', data);
+      }
     } catch (e) { console.error(e); }
   };
 

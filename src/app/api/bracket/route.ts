@@ -5,33 +5,32 @@ export async function GET() {
   try {
     const { data: matches, error } = await supabaseAdmin
       .from('matches')
-      .select(`
-        id as "matchId", 
-        round, 
-        matchNumber as "matchNumber", 
-        winnerId as "winnerId",
-        "player1Score",
-        "player2Score",
-        p1:player1Id(id, fullName),
-        p2:player2Id(id, fullName)
-      `)
+      .select('*')
       .order('round', { ascending: true })
       .order('matchNumber', { ascending: true });
 
     if (error) throw error;
 
+    const { data: participants, error: pError } = await supabaseAdmin
+      .from('participants')
+      .select('id, fullName');
+      
+    if (pError) throw pError;
+    
+    const pMap = new Map((participants || []).map((p: any) => [p.id, p.fullName]));
+
     // Transform data to match previous SQLite output structure exactly
     const formattedMatches = (matches || []).map((m: any) => ({
-      matchId: m.matchId,
+      matchId: m.id,
       round: m.round,
       matchNumber: m.matchNumber,
       winnerId: m.winnerId,
       player1Score: m.player1Score,
       player2Score: m.player2Score,
-      p1Id: m.p1 ? m.p1.id : null,
-      p1Name: m.p1 ? m.p1.fullName : null,
-      p2Id: m.p2 ? m.p2.id : null,
-      p2Name: m.p2 ? m.p2.fullName : null
+      p1Id: m.player1Id,
+      p1Name: pMap.get(m.player1Id) || null,
+      p2Id: m.player2Id,
+      p2Name: pMap.get(m.player2Id) || null
     }));
 
     return NextResponse.json(formattedMatches);

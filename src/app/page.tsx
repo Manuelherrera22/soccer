@@ -3,10 +3,13 @@
 import { useState, useEffect, useMemo } from 'react';
 
 function Sparkles() {
-  const items = useMemo(() => Array.from({ length: 40 }, (_, i) => {
-    const types = ['dot', 'glow', 'star'];
-    return { id: i, type: types[i % 3], left: Math.random() * 100, delay: Math.random() * 10, duration: 7 + Math.random() * 10 };
-  }), []);
+  const [items, setItems] = useState<any[]>([]);
+  useEffect(() => {
+    setItems(Array.from({ length: 40 }, (_, i) => {
+      const types = ['dot', 'glow', 'star'];
+      return { id: i, type: types[i % 3], left: Math.random() * 100, delay: Math.random() * 10, duration: 7 + Math.random() * 10 };
+    }));
+  }, []);
   return (
     <div className="sparkles">
       {items.map(s => (
