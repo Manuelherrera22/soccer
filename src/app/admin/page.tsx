@@ -163,11 +163,12 @@ export default function AdminDashboard() {
                     <div className="round-label" style={{ marginBottom: '1rem' }}>{ROUND_NAMES[round]}</div>
                     {rm.map((m: any) => (
                       <div key={m.matchId} className="match-card" 
-                           onClick={() => !m.winnerId && m.p1Id && m.p2Id && openScoreModal(m)}
+                           onClick={() => !m.winnerId && (m.p1Id || m.p2Id) && openScoreModal(m)}
                            style={{ 
-                             cursor: (!m.winnerId && m.p1Id && m.p2Id) ? 'pointer' : 'default',
-                             marginBottom: '0.5rem',
-                             opacity: (!m.winnerId && m.p1Id && m.p2Id) ? 1 : 0.7 
+                             cursor: (!m.winnerId && (m.p1Id || m.p2Id)) ? 'pointer' : 'default',
+                             marginBottom: '0.8rem',
+                             opacity: (!m.winnerId && (m.p1Id || m.p2Id)) ? 1 : 0.6,
+                             border: (!m.winnerId && (m.p1Id || m.p2Id)) ? '1px solid var(--purple-glow)' : '1px solid var(--glass-border)'
                            }}>
                         <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
                           {m.p1Id ? <span className="player-name" title={m.p1Name}>{m.p1Name}</span> : <span className="tbd">TBD</span>}
@@ -176,7 +177,7 @@ export default function AdminDashboard() {
                             {m.winnerId === m.p1Id && <span>🏆</span>}
                           </div>
                         </div>
-                        <div className="match-vs">VS</div>
+                        <div className="match-vs" style={{ textAlign: 'center', fontSize: '0.65rem', padding: '2px 0', opacity: 0.5, background: 'rgba(0,0,0,0.2)' }}>VS</div>
                         <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
                           {m.p2Id ? <span className="player-name" title={m.p2Name}>{m.p2Name}</span> : <span className="tbd">TBD</span>}
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -213,8 +214,8 @@ export default function AdminDashboard() {
               <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: '0.5rem' }}>¿Quién avanzó a la siguiente ronda?</label>
               <select value={selectedWinner} onChange={e => setSelectedWinner(e.target.value ? Number(e.target.value) : '')} className="input-field">
                 <option value="">-- Seleccionar Ganador --</option>
-                <option value={activeMatch.p1Id}>{activeMatch.p1Name}</option>
-                <option value={activeMatch.p2Id}>{activeMatch.p2Name}</option>
+                {activeMatch.p1Id && <option value={activeMatch.p1Id}>{activeMatch.p1Name}</option>}
+                {activeMatch.p2Id && <option value={activeMatch.p2Id}>{activeMatch.p2Name}</option>}
               </select>
             </div>
 
