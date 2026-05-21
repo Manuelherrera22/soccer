@@ -120,10 +120,9 @@ export default function AdminDashboard() {
             </div>
           </div>
           
-          <div className="actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div className="actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
             <button className="btn-outline" onClick={downloadCSV} style={{ margin: 0, padding: '0.6rem 1rem' }}>Exportar CSV</button>
             <button className="btn-purple" onClick={handleGenerate} style={{ margin: 0, padding: '0.6rem 1rem' }}>Generar Llaves</button>
-            <div style={{ width: '1px', height: '30px', background: 'var(--glass-border)', margin: '0 0.5rem' }}></div>
             <button className="btn-outline" onClick={async () => {
               await fetch('/api/admin/logout', { method: 'POST' });
               window.location.href = '/admin/login';

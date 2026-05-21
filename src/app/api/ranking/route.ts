@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
     // 1. Fetch all participants
-    const { data: participants, error: pError } = await supabase
+    const { data: participants, error: pError } = await supabaseAdmin
       .from('participants')
       .select('id, fullName');
 
     if (pError) throw pError;
 
     // 2. Fetch all played matches
-    const { data: matches, error: mError } = await supabase
+    const { data: matches, error: mError } = await supabaseAdmin
       .from('matches')
       .select('player1Id, player2Id, winnerId, player1Score, player2Score')
       .not('winnerId', 'is', null);
