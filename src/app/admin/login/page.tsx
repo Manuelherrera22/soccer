@@ -40,7 +40,7 @@ export default function AdminLogin() {
       <div className="form-card" style={{ maxWidth: '400px', width: '90%' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div className="shield-logo" style={{ width: '150px', margin: '0 auto 1.5rem auto' }}>
-            <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup" style={{ width: '100%' }} />
+            <img src="/Logo Final.png" alt="Elite Gaming Cup" style={{ width: '100%' }} />
           </div>
           <h1 className="hero-heading" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Admin Login</h1>
           <p className="hero-desc" style={{ fontSize: '0.9rem', opacity: 0.7 }}>Acceso restringido al personal autorizado</p>

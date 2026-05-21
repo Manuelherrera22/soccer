@@ -43,7 +43,7 @@ function MainLogo() {
   return (
     <div className="shield-logo" style={{ width: '320px', marginBottom: '2rem' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming Cup - Davivienda & Tigo" />
+      <img src="/Logo Final.png" alt="Elite Gaming Cup - Davivienda & Tigo" />
     </div>
   );
 }
