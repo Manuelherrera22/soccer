@@ -1,6 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
+
+const Controls = () => {
+  const { zoomIn, zoomOut, resetTransform } = useControls();
+  return (
+    <div className="zoom-controls" style={{ position: 'absolute', bottom: '1rem', right: '1rem', zIndex: 10, display: 'flex', gap: '0.5rem', background: 'rgba(0,0,0,0.5)', padding: '0.5rem', borderRadius: '8px' }}>
+      <button className="zoom-btn" onClick={() => zoomIn()}>+</button>
+      <button className="zoom-btn" onClick={() => zoomOut()}>-</button>
+      <button className="zoom-btn" onClick={() => resetTransform()}>⟲</button>
+    </div>
+  );
+};
 
 const ROUND_NAMES: Record<number, string> = {
   1: 'Ronda de 64', 2: 'Ronda de 32', 3: 'Ronda de 16',
@@ -76,9 +88,10 @@ export default function AdminDashboard() {
     if (!participants.length) return;
     const headers = ['ID', 'Nombre', 'Tarifa', 'Fecha Nac.', 'Teléfono', 'Email', 'Cliente Davivienda', 'Cliente Tigo', 'Fecha Registro'];
     const rows = participants.map(p =>
-      [p.id, `"${p.fullName}"`, p.tariff, p.birthDate, p.phone, p.email, p.isDaviviendaClient ? 'Sí' : 'No', p.isTigoClient ? 'Sí' : 'No', p.createdAt].join(',')
+      [p.id, `"${p.fullName}"`, p.tariff, p.birthDate, `="${p.phone}"`, p.email, p.isDaviviendaClient ? 'Sí' : 'No', p.isTigoClient ? 'Sí' : 'No', p.createdAt].join(',')
     );
-    const blob = new Blob([`${headers.join(',')}\n${rows.join('\n')}`], { type: 'text/csv' });
+    const bom = '\uFEFF';
+    const blob = new Blob([bom + `${headers.join(',')}\n${rows.join('\n')}`], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'participantes_gaming_cup.csv';
@@ -154,42 +167,49 @@ export default function AdminDashboard() {
           {matches.length === 0 ? (
             <p style={{ color: 'var(--text-muted)' }}>No hay llaves generadas.</p>
           ) : (
-            <div className="bracket-scroll">
-              {[1, 2, 3, 4, 5, 6, 7].map(round => {
-                const rm = matches.filter((m: any) => m.round === round);
-                if (!rm.length) return null;
-                return (
-                  <div key={round} className="bracket-round" style={{ gap: '1rem', justifyContent: 'flex-start' }}>
-                    <div className="round-label" style={{ marginBottom: '1rem' }}>{ROUND_NAMES[round]}</div>
-                    {rm.map((m: any) => (
-                      <div key={m.matchId} className="match-card" 
-                           onClick={() => !m.winnerId && (m.p1Id || m.p2Id) && openScoreModal(m)}
-                           style={{ 
-                             cursor: (!m.winnerId && (m.p1Id || m.p2Id)) ? 'pointer' : 'default',
-                             marginBottom: '0.8rem',
-                             opacity: (!m.winnerId && (m.p1Id || m.p2Id)) ? 1 : 0.6,
-                             border: (!m.winnerId && (m.p1Id || m.p2Id)) ? '1px solid var(--purple-glow)' : '1px solid var(--glass-border)'
-                           }}>
-                        <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
-                          {m.p1Id ? <span className="player-name" title={m.p1Name}>{m.p1Name}</span> : <span className="tbd">TBD</span>}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            {m.winnerId && <span className="player-score">{m.player1Score}</span>}
-                            {m.winnerId === m.p1Id && <span>🏆</span>}
-                          </div>
+            <div style={{ position: 'relative', width: '100%', height: '600px', overflow: 'hidden', background: '#0a0a0c', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+              <TransformWrapper initialScale={1} minScale={0.3} maxScale={2} centerOnInit>
+                <Controls />
+                <TransformComponent wrapperStyle={{ width: "100%", height: "100%" }} contentStyle={{ padding: "3rem" }}>
+                  <div className="bracket-scroll" style={{ overflow: 'visible', height: 'auto', border: 'none', background: 'transparent' }}>
+                    {[1, 2, 3, 4, 5, 6, 7].map(round => {
+                      const rm = matches.filter((m: any) => m.round === round);
+                      if (!rm.length) return null;
+                      return (
+                        <div key={round} className="bracket-round" style={{ gap: '1rem', justifyContent: 'flex-start' }}>
+                          <div className="round-label" style={{ marginBottom: '1rem' }}>{ROUND_NAMES[round]}</div>
+                          {rm.map((m: any) => (
+                            <div key={m.matchId} className="match-card" 
+                                 onClick={() => !m.winnerId && (m.p1Id || m.p2Id) && openScoreModal(m)}
+                                 style={{ 
+                                   cursor: (!m.winnerId && (m.p1Id || m.p2Id)) ? 'pointer' : 'default',
+                                   marginBottom: '0.8rem',
+                                   opacity: (!m.winnerId && (m.p1Id || m.p2Id)) ? 1 : 0.6,
+                                   border: (!m.winnerId && (m.p1Id || m.p2Id)) ? '1px solid var(--purple-glow)' : '1px solid var(--glass-border)'
+                                 }}>
+                              <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
+                                {m.p1Id ? <span className="player-name" title={m.p1Name}>{m.p1Name}</span> : <span className="tbd">TBD</span>}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                  {m.winnerId && <span className="player-score">{m.player1Score}</span>}
+                                  {m.winnerId === m.p1Id && <span>🏆</span>}
+                                </div>
+                              </div>
+                              <div className="match-vs" style={{ textAlign: 'center', fontSize: '0.65rem', padding: '2px 0', opacity: 0.5, background: 'rgba(0,0,0,0.2)' }}>VS</div>
+                              <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
+                                {m.p2Id ? <span className="player-name" title={m.p2Name}>{m.p2Name}</span> : <span className="tbd">TBD</span>}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                  {m.winnerId && <span className="player-score">{m.player2Score}</span>}
+                                  {m.winnerId === m.p2Id && <span>🏆</span>}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <div className="match-vs" style={{ textAlign: 'center', fontSize: '0.65rem', padding: '2px 0', opacity: 0.5, background: 'rgba(0,0,0,0.2)' }}>VS</div>
-                        <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
-                          {m.p2Id ? <span className="player-name" title={m.p2Name}>{m.p2Name}</span> : <span className="tbd">TBD</span>}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            {m.winnerId && <span className="player-score">{m.player2Score}</span>}
-                            {m.winnerId === m.p2Id && <span>🏆</span>}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
-                );
-              })}
+                </TransformComponent>
+              </TransformWrapper>
             </div>
           )}
         </div>
