@@ -15,8 +15,8 @@ const Controls = () => {
 };
 
 const ROUND_NAMES: Record<number, string> = {
-  1: 'Ronda de 64', 2: 'Ronda de 32', 3: 'Ronda de 16',
-  4: 'Cuartos', 5: 'Semifinal', 6: 'Final', 7: 'Campeón'
+  1: 'Ronda de 128', 2: 'Ronda de 64', 3: 'Ronda de 32',
+  4: 'Octavos de Final', 5: 'Cuartos de Final', 6: 'Semifinal', 7: 'Campeón'
 };
 
 export default function AdminDashboard() {
