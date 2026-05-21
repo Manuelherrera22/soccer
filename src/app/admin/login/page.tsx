@@ -46,7 +46,7 @@ export default function AdminLogin() {
           <p className="hero-desc" style={{ fontSize: '0.9rem', opacity: 0.7 }}>Acceso restringido al personal autorizado</p>
         </div>
 
-        {error && <div className="alert alert-error" style={{ textAlign: 'center' }}>⚠️ {error}</div>}
+        {error && <div className="alert alert-error" style={{ textAlign: 'center' }}>{error}</div>}
 
         <form onSubmit={handleLogin}>
           <div className="form-group">
@@ -73,7 +73,7 @@ export default function AdminLogin() {
           </div>
           
           <button type="submit" className="btn-submit" disabled={loading} style={{ marginTop: '1.5rem' }}>
-            {loading ? '⏳ Validando...' : 'INGRESAR'}
+            {loading ? 'Validando...' : 'INGRESAR'}
           </button>
         </form>
         

@@ -83,7 +83,7 @@ export default function RankingPage() {
                 {ranking.map((player, idx) => (
                   <tr key={player.id} style={{ transition: 'background 0.2s' }}>
                     <td style={{ textAlign: 'center', fontWeight: 'bold', color: idx < 3 ? 'var(--gold)' : 'var(--text-muted)' }}>
-                      {idx + 1} {idx === 0 ? '👑' : ''}
+                      {idx + 1}
                     </td>
                     <td style={{ fontWeight: 600 }}>
                       <Link href={`/player/${player.id}`} style={{ color: 'var(--white)', textDecoration: 'none' }}>

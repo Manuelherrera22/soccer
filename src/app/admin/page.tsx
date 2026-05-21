@@ -121,13 +121,13 @@ export default function AdminDashboard() {
           </div>
           
           <div className="actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <button className="btn-outline" onClick={downloadCSV} style={{ margin: 0, padding: '0.6rem 1rem' }}>📥 Exportar CSV</button>
-            <button className="btn-purple" onClick={handleGenerate} style={{ margin: 0, padding: '0.6rem 1rem' }}>🎲 Generar Llaves</button>
+            <button className="btn-outline" onClick={downloadCSV} style={{ margin: 0, padding: '0.6rem 1rem' }}>Exportar CSV</button>
+            <button className="btn-purple" onClick={handleGenerate} style={{ margin: 0, padding: '0.6rem 1rem' }}>Generar Llaves</button>
             <div style={{ width: '1px', height: '30px', background: 'var(--glass-border)', margin: '0 0.5rem' }}></div>
             <button className="btn-outline" onClick={async () => {
               await fetch('/api/admin/logout', { method: 'POST' });
               window.location.href = '/admin/login';
-            }} style={{ margin: 0, padding: '0.6rem 1rem', borderColor: '#ff4444', color: '#ff4444' }}>Salir 🚪</button>
+            }} style={{ margin: 0, padding: '0.6rem 1rem', borderColor: '#ff4444', color: '#ff4444' }}>Salir</button>
           </div>
         </div>
 
@@ -191,7 +191,6 @@ export default function AdminDashboard() {
                                 {m.p1Id ? <span className="player-name" title={m.p1Name}>{m.p1Name}</span> : <span className="tbd">TBD</span>}
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                   {m.winnerId && <span className="player-score">{m.player1Score}</span>}
-                                  {m.winnerId === m.p1Id && <span>🏆</span>}
                                 </div>
                               </div>
                               <div className="match-vs" style={{ textAlign: 'center', fontSize: '0.65rem', padding: '2px 0', opacity: 0.5, background: 'rgba(0,0,0,0.2)' }}>VS</div>
@@ -199,7 +198,6 @@ export default function AdminDashboard() {
                                 {m.p2Id ? <span className="player-name" title={m.p2Name}>{m.p2Name}</span> : <span className="tbd">TBD</span>}
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                   {m.winnerId && <span className="player-score">{m.player2Score}</span>}
-                                  {m.winnerId === m.p2Id && <span>🏆</span>}
                                 </div>
                               </div>
                             </div>

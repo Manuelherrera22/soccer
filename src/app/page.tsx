@@ -102,11 +102,10 @@ export default function Home() {
         <div className="neon-line neon-line-left" /><div className="neon-line neon-line-right" />
         <div className="success-screen">
           <div className="form-card success-card" style={{ textAlign: 'center' }}>
-            <div className="success-icon">🏆</div>
             <MainLogo />
             <h1 className="hero-heading" style={{ fontSize: '1.6rem' }}>¡Inscripción Exitosa!</h1>
             <p className="hero-desc">Tu lugar en la Gaming Cup está asegurado.</p>
-            <div className="alert alert-success">✅ Pronto anunciaremos las llaves del torneo.</div>
+            <div className="alert alert-success">Pronto anunciaremos las llaves del torneo.</div>
             <a href="/bracket" className="btn-submit" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }}>Ver Llaves del Torneo</a>
           </div>
         </div>
@@ -123,7 +122,7 @@ export default function Home() {
         <h1 className="hero-heading">Inscríbete al Torneo</h1>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '1rem' }}>
           <div className="alert alert-success" style={{ margin: 0, padding: '0.5rem 1.5rem', background: 'rgba(0, 229, 255, 0.1)', borderColor: 'var(--cyan)', color: 'var(--cyan)', fontWeight: 'bold' }}>
-            {stats.remaining > 0 ? `🔥 Quedan ${stats.remaining} cupos disponibles` : '⚠️ Cupos agotados (128/128)'}
+            {stats.remaining > 0 ? `Quedan ${stats.remaining} cupos disponibles` : 'Cupos agotados (128/128)'}
           </div>
         </div>
         <p className="hero-desc">Registrate y asegura tu lugar en la Gaming Cup. Llena el formulario para inscribirte y participar en el torneo.</p>

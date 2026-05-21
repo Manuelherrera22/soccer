@@ -87,7 +87,7 @@ export default function BracketView() {
             </div>
             <input
               type="text" className="form-control bracket-search"
-              placeholder="🔍 Busca a un jugador..."
+              placeholder="Busca a un jugador..."
               value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
             />
           </div>
@@ -95,7 +95,6 @@ export default function BracketView() {
 
         {matches.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', maxWidth: '500px', margin: '4rem auto' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⏳</div>
             <h3 className="section-title" style={{ justifyContent: 'center' }}>Las llaves aún no han sido generadas</h3>
             <p style={{ color: 'var(--text-muted)' }}>Vuelve pronto para conocer los enfrentamientos.</p>
           </div>
