@@ -96,11 +96,25 @@ export default function AdminDashboard() {
   return (
     <div className="page-wrapper">
       <div className="container">
-        <div className="admin-bar">
-          <h1 className="hero-title">⚙️ Panel de Administración</h1>
-          <div className="actions">
-            <button className="btn-outline" onClick={downloadCSV}>📥 Exportar CSV</button>
-            <button className="btn-purple" onClick={handleGenerate}>🎲 Generar Llaves</button>
+        <div className="admin-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem', background: 'rgba(24, 24, 27, 0.6)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="shield-logo" style={{ width: '60px' }}>
+              <img src="/Nuevo Logo_ELITE GAMING CUP_DAVIVIENDA Y TIGO.png" alt="Elite Gaming" />
+            </div>
+            <div>
+              <h1 className="hero-title" style={{ margin: 0, fontSize: '1.5rem', textAlign: 'left' }}>Control Center</h1>
+              <span style={{ fontSize: '0.8rem', color: 'var(--gold)', letterSpacing: '1px' }}>ADMINISTRADOR</span>
+            </div>
+          </div>
+          
+          <div className="actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <button className="btn-outline" onClick={downloadCSV} style={{ margin: 0, padding: '0.6rem 1rem' }}>📥 Exportar CSV</button>
+            <button className="btn-purple" onClick={handleGenerate} style={{ margin: 0, padding: '0.6rem 1rem' }}>🎲 Generar Llaves</button>
+            <div style={{ width: '1px', height: '30px', background: 'var(--glass-border)', margin: '0 0.5rem' }}></div>
+            <button className="btn-outline" onClick={async () => {
+              await fetch('/api/admin/logout', { method: 'POST' });
+              window.location.href = '/admin/login';
+            }} style={{ margin: 0, padding: '0.6rem 1rem', borderColor: '#ff4444', color: '#ff4444' }}>Salir 🚪</button>
           </div>
         </div>
 

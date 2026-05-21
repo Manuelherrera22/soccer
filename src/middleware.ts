@@ -2,29 +2,27 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(req: NextRequest) {
-  // Only protect admin routes
-  if (!req.nextUrl.pathname.startsWith('/admin') && !req.nextUrl.pathname.startsWith('/api/admin')) {
+  const { pathname } = req.nextUrl;
+
+  // Allow login page and login API
+  if (pathname === '/admin/login' || pathname === '/api/admin/login') {
     return NextResponse.next();
   }
 
-  const basicAuth = req.headers.get('authorization');
+  // Only protect admin routes
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
+    const token = req.cookies.get('admin_token')?.value;
 
-  if (basicAuth) {
-    const authValue = basicAuth.split(' ')[1];
-    const [user, pwd] = atob(authValue).split(':');
-
-    // Hardcoded credentials for quick protection
-    if (user === 'admin' && pwd === 'elitegaming2026') {
+    if (token === 'elite_gaming_auth_ok') {
       return NextResponse.next();
     }
+
+    // Redirect to custom login page
+    const loginUrl = new URL('/admin/login', req.url);
+    return NextResponse.redirect(loginUrl);
   }
 
-  return new NextResponse('Auth required', {
-    status: 401,
-    headers: {
-      'WWW-Authenticate': 'Basic realm="Secure Area"',
-    },
-  });
+  return NextResponse.next();
 }
 
 export const config = {
