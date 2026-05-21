@@ -121,6 +121,11 @@ export default function Home() {
       <div className="container-centered">
         <MainLogo />
         <h1 className="hero-heading">Inscríbete al Torneo</h1>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '1rem' }}>
+          <div className="alert alert-success" style={{ margin: 0, padding: '0.5rem 1.5rem', background: 'rgba(0, 229, 255, 0.1)', borderColor: 'var(--cyan)', color: 'var(--cyan)', fontWeight: 'bold' }}>
+            {stats.remaining > 0 ? `🔥 Quedan ${stats.remaining} cupos disponibles` : '⚠️ Cupos agotados (128/128)'}
+          </div>
+        </div>
         <p className="hero-desc">Registrate y asegura tu lugar en la Gaming Cup. Llena el formulario para inscribirte y participar en el torneo.</p>
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
           <a href="/bracket" className="btn-gold-outline" style={{ margin: 0 }}>Ver Llaves</a>
@@ -197,6 +202,10 @@ export default function Home() {
               {status.loading ? '⏳ Registrando...' : 'INSCRIBIRME AHORA'}
             </button>
           </form>
+        </div>
+
+        <div style={{ marginTop: '3rem', textAlign: 'center', opacity: 0.3, fontSize: '0.8rem' }}>
+          © {new Date().getFullYear()} Elite Gaming Cup. <a href="/admin" style={{ color: 'inherit', textDecoration: 'none' }}>All rights reserved.</a>
         </div>
       </div>
     </div>
