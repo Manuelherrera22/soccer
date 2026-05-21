@@ -201,21 +201,21 @@ export default function AdminDashboard() {
             <h3 style={{ fontFamily: 'Orbitron', marginBottom: '1.5rem', textAlign: 'center' }}>Registrar Resultado</h3>
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <span style={{ fontWeight: 600, width: '40%' }}>{activeMatch.p1Name}</span>
-              <input type="number" min="0" value={score1} onChange={e => setScore1(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ width: '60px', textAlign: 'center' }} />
+              <span style={{ fontWeight: 600, width: '60%' }}>{activeMatch.p1Name}</span>
+              <input type="number" min="0" value={score1} onChange={e => setScore1(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ width: '80px', height: '50px', fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center', padding: '0.5rem' }} />
             </div>
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <span style={{ fontWeight: 600, width: '40%' }}>{activeMatch.p2Name}</span>
-              <input type="number" min="0" value={score2} onChange={e => setScore2(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ width: '60px', textAlign: 'center' }} />
+              <span style={{ fontWeight: 600, width: '60%' }}>{activeMatch.p2Name}</span>
+              <input type="number" min="0" value={score2} onChange={e => setScore2(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ width: '80px', height: '50px', fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center', padding: '0.5rem' }} />
             </div>
 
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: '0.5rem' }}>¿Quién avanzó a la siguiente ronda?</label>
-              <select value={selectedWinner} onChange={e => setSelectedWinner(e.target.value ? Number(e.target.value) : '')} className="input-field">
-                <option value="">-- Seleccionar Ganador --</option>
-                {activeMatch.p1Id && <option value={activeMatch.p1Id}>{activeMatch.p1Name}</option>}
-                {activeMatch.p2Id && <option value={activeMatch.p2Id}>{activeMatch.p2Name}</option>}
+              <select value={selectedWinner} onChange={e => setSelectedWinner(e.target.value ? Number(e.target.value) : '')} className="input-field" style={{ backgroundColor: '#18181b', color: '#fff' }}>
+                <option value="" style={{ background: '#18181b', color: '#fff' }}>-- Seleccionar Ganador --</option>
+                {activeMatch.p1Id && <option value={activeMatch.p1Id} style={{ background: '#18181b', color: '#fff' }}>{activeMatch.p1Name}</option>}
+                {activeMatch.p2Id && <option value={activeMatch.p2Id} style={{ background: '#18181b', color: '#fff' }}>{activeMatch.p2Name}</option>}
               </select>
             </div>
 
