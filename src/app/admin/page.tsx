@@ -159,22 +159,30 @@ export default function AdminDashboard() {
                 const rm = matches.filter((m: any) => m.round === round);
                 if (!rm.length) return null;
                 return (
-                  <div key={round} className="bracket-round">
-                    <div className="round-label">{ROUND_NAMES[round]}</div>
+                  <div key={round} className="bracket-round" style={{ gap: '1rem', justifyContent: 'flex-start' }}>
+                    <div className="round-label" style={{ marginBottom: '1rem' }}>{ROUND_NAMES[round]}</div>
                     {rm.map((m: any) => (
                       <div key={m.matchId} className="match-card" 
                            onClick={() => !m.winnerId && m.p1Id && m.p2Id && openScoreModal(m)}
-                           style={{ cursor: (!m.winnerId && m.p1Id && m.p2Id) ? 'pointer' : 'default' }}>
+                           style={{ 
+                             cursor: (!m.winnerId && m.p1Id && m.p2Id) ? 'pointer' : 'default',
+                             marginBottom: '0.5rem',
+                             opacity: (!m.winnerId && m.p1Id && m.p2Id) ? 1 : 0.7 
+                           }}>
                         <div className={`match-player ${m.winnerId === m.p1Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p1Id ? 'loser' : ''}`}>
-                          {m.p1Id ? <span>{m.p1Name}</span> : <span className="tbd">TBD</span>}
-                          {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player1Score}</span>}
-                          {m.winnerId === m.p1Id && <span>🏆</span>}
+                          {m.p1Id ? <span className="player-name" title={m.p1Name}>{m.p1Name}</span> : <span className="tbd">TBD</span>}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            {m.winnerId && <span className="player-score">{m.player1Score}</span>}
+                            {m.winnerId === m.p1Id && <span>🏆</span>}
+                          </div>
                         </div>
                         <div className="match-vs">VS</div>
                         <div className={`match-player ${m.winnerId === m.p2Id ? 'winner' : ''} ${m.winnerId && m.winnerId !== m.p2Id ? 'loser' : ''}`}>
-                          {m.p2Id ? <span>{m.p2Name}</span> : <span className="tbd">TBD</span>}
-                          {m.winnerId && <span style={{ fontWeight: 'bold' }}>{m.player2Score}</span>}
-                          {m.winnerId === m.p2Id && <span>🏆</span>}
+                          {m.p2Id ? <span className="player-name" title={m.p2Name}>{m.p2Name}</span> : <span className="tbd">TBD</span>}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            {m.winnerId && <span className="player-score">{m.player2Score}</span>}
+                            {m.winnerId === m.p2Id && <span>🏆</span>}
+                          </div>
                         </div>
                       </div>
                     ))}
