@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase';
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const { fullName, birthDate, phone, email, isDaviviendaClient, isTigoClient, isMinor, guardianName, guardianPhone, guardianDui, acceptedTerms } = data;
+    const { fullName, birthDate, phone, email, isDaviviendaClient, isTigoClient, isMinor, guardianName, guardianPhone, guardianDui, acceptedTerms, acceptedImageRights, acceptedPrivacy } = data;
 
     if (!fullName || !birthDate || !phone || !email) {
       return NextResponse.json({ error: 'Todos los campos son obligatorios.' }, { status: 400 });
@@ -14,8 +14,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Debes seleccionar al menos Davivienda o Tigo.' }, { status: 400 });
     }
 
-    if (!acceptedTerms) {
-      return NextResponse.json({ error: 'Debes aceptar los términos y condiciones.' }, { status: 400 });
+    if (!acceptedTerms || !acceptedImageRights || !acceptedPrivacy) {
+      return NextResponse.json({ error: 'Debes aceptar los términos y condiciones, uso de imagen y políticas de privacidad.' }, { status: 400 });
     }
 
     if (isMinor && (!guardianName || !guardianPhone || !guardianDui)) {

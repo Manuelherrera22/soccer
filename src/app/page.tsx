@@ -54,7 +54,7 @@ export default function Home() {
     fullName: '', birthDate: '', phone: '', email: '',
     isDaviviendaClient: false, isTigoClient: false, isMinor: false,
     guardianName: '', guardianPhone: '', guardianDui: '',
-    acceptedTerms: false,
+    acceptedTerms: false, acceptedImageRights: false, acceptedPrivacy: false,
   });
   const [sponsorError, setSponsorError] = useState(false);
   const [status, setStatus] = useState({ loading: false, error: '', success: false });
@@ -190,11 +190,29 @@ export default function Home() {
               </div>
             )}
 
-            <div className="checkbox-group" style={{ marginTop: '0.5rem' }}>
-              <label className="checkbox-label">
-                <input type="checkbox" name="acceptedTerms" checked={form.acceptedTerms} onChange={handleCheck} />
-                Acepto los <strong>términos y condiciones</strong> del torneo.
-              </label>
+            <div className="terms-container" style={{ marginTop: '2rem', marginBottom: '1.5rem', background: 'rgba(20,10,60,0.3)', border: '1px solid var(--glass-border)', borderRadius: '12px', padding: '1.5rem' }}>
+              <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '1px' }}>Reglamento y Privacidad</h3>
+              <div className="terms-scroll" style={{ height: '200px', overflowY: 'auto', fontSize: '0.8rem', color: 'var(--text-light)', paddingRight: '0.5rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                <p style={{ marginBottom: '1rem' }}><strong>PRIMERA: OBJETO Y ORGANIZADORES</strong><br/>El presente reglamento establece las condiciones contractuales y de participación que regirán el torneo de videojuegos denominado "Elite Gaming Cup" , el cual es promovido de manera conjunta por Banco Davivienda Salvadoreño, S.A. y Tigo Sports / Tigo (en adelante denominados de forma conjunta como "Los Organizadores").</p>
+                <p style={{ marginBottom: '1rem' }}><strong>SEGUNDA: REQUISITOS DE ADMISIBILIDAD Y EDAD MÍNIMA</strong><br/>Edad Mínima Requerida: La participación en el torneo está estrictamente limitada a personas naturales mayores de 14 años de edad.<br/>Mecanismo para Participantes Menores de Edad: Todo participante que tenga entre 14 y menos de 18 años de edad (menor de edad) deberá realizar su proceso de inscripción registrando obligatoriamente el número de Documento Único de Identidad (DUI) de su padre, madre o responsable legal. Asimismo, será condición indispensable para habilitar su participación la entrega física de una carta de autorización firmada por dicho tutor el día del evento.</p>
+                <p style={{ marginBottom: '1rem' }}><strong>TERCERA: CONDICIÓN DE EXCLUSIVIDAD PARA CLIENTES</strong><br/>Acceso Restringido: El ingreso y la participación en el Torneo se reserva de forma exclusiva para clientes activos de Tigo o clientes de Tarjeta de Crédito o Débito de Banco Davivienda Salvadoreño, S.A.. No se admitirá la inscripción ni el ingreso de personas que no ostenten la calidad de clientes activos de las marcas mencionadas.<br/>Declaración y Validación: Al momento de realizar el proceso de inscripción en el landing page oficial, cada postulante deberá declarar expresamente si es cliente de Tigo o Davivienda. Dicha información será utilizada para la validación de su estatus y la aplicación de los beneficios correspondientes.</p>
+                <p style={{ marginBottom: '1rem' }}><strong>CUARTA: LOGÍSTICA, FORMATO Y REGLAS DE LA COMPETENCIA</strong><br/>Fecha, Hora y Sede: El evento se llevará a cabo el día domingo 31 de mayo de 2026 en las instalaciones de Metrocentro, 8ª Etapa, iniciando formalmente el llamado a partir de las 10:00 a.m..<br/>Plataforma y Videojuego Oficial: El torneo se desarrollará de forma exclusiva en la consola de videojuegos PlayStation 5 (PS5), utilizando como software oficial y único de competencia el juego EA Sports FC 26 (FC26). Los Organizadores proveerán las consolas, pantallas y el videojuego en su versión original y actualizada a la fecha del evento. Queda estrictamente prohibido el uso de cuentas personales, modificaciones de software (hacks) o la alteración de las plantillas oficiales predeterminadas para el torneo.<br/>Formato del Torneo: Se adoptará un sistema de competición de eliminación directa. Cada emparejamiento o enfrentamiento definirá de manera automática e inapelable al jugador que avanza a la siguiente ronda, aplicándose de forma sucesiva hasta determinar a los participantes de la gran final.<br/>Duración de las Partidas: Cada partido se disputará con una duración cronometrada máxima de 3 minutos por cada tiempo de juego, utilizando de forma obligatoria las configuraciones oficiales predefinidas por la organización.<br/>Estaciones de Juego y Horarios: La asignación de los horarios específicos y las estaciones de juego será realizada previamente por los organizadores y se comunicará formalmente a los jugadores durante el desarrollo del evento.<br/>Puntualidad y Penalización por Ausencia (Default): Cada participante tiene la obligación de presentarse con la debida anticipación a la partida que le corresponda. En caso de no estar presente al momento del llamado oficial por parte del staff, se procederá a declarar la pérdida del encuentro por default automáticamente.</p>
+                <p><strong>QUINTA: ACEPTACIÓN DE LAS BASES</strong><br/>El perfeccionamiento del proceso de inscripción digital implica la lectura, comprensión y aceptación automática, expresa e irrevocable de la totalidad de las reglas, condiciones y lineamientos generales aquí descritos.</p>
+              </div>
+              <div className="checkbox-group" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <label className="checkbox-label" style={{ alignItems: 'flex-start', cursor: 'pointer' }}>
+                  <input type="checkbox" name="acceptedTerms" checked={form.acceptedTerms} onChange={handleCheck} style={{ marginTop: '0.2rem', transform: 'scale(1.2)' }} />
+                  <span style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>He leído, comprendido y <strong>acepto las bases, condiciones y lineamientos</strong> estipulados en el Reglamento del Torneo.</span>
+                </label>
+                <label className="checkbox-label" style={{ alignItems: 'flex-start', cursor: 'pointer' }}>
+                  <input type="checkbox" name="acceptedImageRights" checked={form.acceptedImageRights} onChange={handleCheck} style={{ marginTop: '0.2rem', transform: 'scale(1.2)' }} />
+                  <span style={{ fontSize: '0.85rem', lineHeight: '1.4' }}><strong>Autorización de Uso de Imagen:</strong> Autorizo de manera expresa y gratuita a Banco Davivienda Salvadoreño, S.A., y a Tigo Sports para capturar y utilizar fotografías/vídeos tomados durante el evento con fines promocionales.</span>
+                </label>
+                <label className="checkbox-label" style={{ alignItems: 'flex-start', cursor: 'pointer' }}>
+                  <input type="checkbox" name="acceptedPrivacy" checked={form.acceptedPrivacy} onChange={handleCheck} style={{ marginTop: '0.2rem', transform: 'scale(1.2)' }} />
+                  <span style={{ fontSize: '0.85rem', lineHeight: '1.4' }}><strong>Aviso de Privacidad:</strong> La información provista será tratada con estricta confidencialidad. Su recolección tiene como única finalidad la gestión operativa del torneo y validación de beneficios.</span>
+                </label>
+              </div>
             </div>
 
             <button type="submit" className="btn-submit" disabled={status.loading}>
