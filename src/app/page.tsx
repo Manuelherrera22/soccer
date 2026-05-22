@@ -103,10 +103,10 @@ export default function Home() {
         <div className="success-screen">
           <div className="form-card success-card" style={{ textAlign: 'center' }}>
             <MainLogo />
-            <h1 className="hero-heading" style={{ fontSize: '1.6rem' }}>¡Inscripción Exitosa!</h1>
-            <p className="hero-desc">Tu lugar en la Gaming Cup está asegurado.</p>
-            <div className="alert alert-success">Pronto anunciaremos las llaves del torneo.</div>
-            <a href="/bracket" className="btn-submit" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }}>Ver Llaves del Torneo</a>
+            <h1 className="hero-heading" style={{ fontSize: '1.6rem' }}>¡Casi listo!</h1>
+            <p className="hero-desc">Para completar tu inscripción, debes validar tu correo electrónico.</p>
+            <div className="alert alert-success">Te hemos enviado un enlace de confirmación a tu correo. Por favor revisa tu bandeja de entrada (o la carpeta de SPAM) y haz clic en el botón para finalizar el registro.</div>
+            <a href="/" className="btn-submit" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }}>Volver al inicio</a>
           </div>
         </div>
       </div>

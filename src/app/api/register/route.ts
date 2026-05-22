@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(req: Request) {
@@ -48,31 +49,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Este correo electrónico ya está registrado.' }, { status: 400 });
     }
 
-    // Insert new participant
-    const { error: insertError } = await supabaseAdmin
-      .from('participants')
-      .insert([
-        {
-          fullName,
-          birthDate,
-          phone,
-          email,
-          isDaviviendaClient: !!isDaviviendaClient,
-          isTigoClient: !!isTigoClient,
-          isMinor: !!isMinor,
-          dui: !isMinor ? dui : null,
-          guardianName: guardianName || null,
-          guardianPhone: guardianPhone || null,
-          guardianDui: guardianDui || null,
-          acceptedTerms: !!acceptedTerms
-        }
-      ]);
+    // Generate Magic Link Token
+    const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || 'fallback_secret_key_123';
+    const payloadData = {
+      fullName,
+      birthDate,
+      phone,
+      email,
+      isDaviviendaClient: !!isDaviviendaClient,
+      isTigoClient: !!isTigoClient,
+      isMinor: !!isMinor,
+      dui: !isMinor ? dui : null,
+      guardianName: guardianName || null,
+      guardianPhone: guardianPhone || null,
+      guardianDui: guardianDui || null,
+      acceptedTerms: !!acceptedTerms,
+      timestamp: Date.now()
+    };
+    
+    const payload = Buffer.from(JSON.stringify(payloadData)).toString('base64url');
+    const signature = crypto.createHmac('sha256', secret).update(payload).digest('base64url');
+    const token = `${payload}.${signature}`;
 
-    if (insertError) {
-      throw insertError;
-    }
+    const origin = req.headers.get('origin') || 'https://elitegamingcup.com';
+    const verifyLink = `${origin}/verify?token=${token}`;
 
-    // Attempt to send a welcome email via Resend
+    // Attempt to send a verification email via Resend
     if (process.env.RESEND_API_KEY) {
       try {
         await fetch('https://api.resend.com/emails', {
@@ -84,40 +86,34 @@ export async function POST(req: Request) {
           body: JSON.stringify({
             from: 'Elite Gaming Cup <registro@elitegamingcup.com>',
             to: email,
-            subject: '¡Registro Exitoso! - Elite Gaming Cup',
+            subject: 'Confirma tu registro - Elite Gaming Cup',
             html: `
               <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
-                <h2 style="color: #6a1b9a; text-align: center;">¡Bienvenido a la Elite Gaming Cup!</h2>
+                <h2 style="color: #6a1b9a; text-align: center;">¡Estás a un paso de la Elite Gaming Cup!</h2>
                 <p>Hola <strong>${fullName}</strong>,</p>
-                <p>Tu registro para la <strong>Elite Gaming Cup</strong>, patrocinada por Davivienda y Tigo, ha sido confirmado exitosamente.</p>
-                <p>Nos emociona tenerte en este gran torneo de EA Sports FC 26.</p>
+                <p>Hemos recibido tu solicitud de registro para el torneo. Para completarlo y asegurar tu cupo, debes confirmar tu correo electrónico haciendo clic en el siguiente botón:</p>
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${verifyLink}" style="background-color: #6a1b9a; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Confirmar mi registro</a>
+                </div>
+                <p style="font-size: 0.9rem; color: #666;">Si el botón no funciona, copia y pega el siguiente enlace en tu navegador:</p>
+                <p style="font-size: 0.8rem; word-break: break-all;"><a href="${verifyLink}">${verifyLink}</a></p>
                 <br />
-                <h3>Detalles de tu inscripción:</h3>
-                <ul>
-                  <li><strong>Participante:</strong> ${fullName}</li>
-                  <li><strong>Correo:</strong> ${email}</li>
-                  <li><strong>Teléfono:</strong> ${phone}</li>
-                  <li><strong>Categoría:</strong> ${isMinor ? 'Menor de edad' : 'Mayor de edad'}</li>
-                </ul>
-                <br />
-                <p>El torneo se llevará a cabo el <strong>domingo 31 de mayo de 2026</strong> en Metrocentro, 8ª Etapa, iniciando a las 10:00 a.m. Te recomendamos llegar con anticipación.</p>
-                <p>¡Prepárate para dar lo mejor en la cancha virtual!</p>
-                <br />
-                <hr style="border: none; border-top: 1px solid #eaeaea;" />
+                <p>El torneo se llevará a cabo el <strong>domingo 31 de mayo de 2026</strong> en Metrocentro, 8ª Etapa.</p>
+                <hr style="border: none; border-top: 1px solid #eaeaea; margin-top: 30px;" />
                 <p style="font-size: 0.8rem; color: #888; text-align: center;">Este es un correo automático, por favor no respondas a este mensaje.</p>
               </div>
             `
           })
         });
       } catch (emailErr) {
-        console.error('Failed to send email:', emailErr);
-        // Do not fail registration if email fails
+        console.error('Failed to send verification email:', emailErr);
+        return NextResponse.json({ error: 'Error al enviar el correo de verificación. Intenta nuevamente.' }, { status: 500 });
       }
     } else {
-      console.log('No RESEND_API_KEY provided. Email skipped.');
+      console.log('No RESEND_API_KEY provided. Verification Email skipped. VERIFY LINK:', verifyLink);
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, pendingVerification: true });
   } catch (error) {
     console.error('Registration failed:', error);
     return NextResponse.json({ error: 'Error interno del servidor.' }, { status: 500 });
