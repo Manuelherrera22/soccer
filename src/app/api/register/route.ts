@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase';
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const { fullName, birthDate, phone, email, isDaviviendaClient, isTigoClient, isMinor, guardianName, guardianPhone, guardianDui, acceptedTerms, acceptedImageRights, acceptedPrivacy } = data;
+    const { fullName, birthDate, phone, email, dui, isDaviviendaClient, isTigoClient, isMinor, guardianName, guardianPhone, guardianDui, acceptedTerms, acceptedImageRights, acceptedPrivacy } = data;
 
     if (!fullName || !birthDate || !phone || !email) {
       return NextResponse.json({ error: 'Todos los campos son obligatorios.' }, { status: 400 });
@@ -20,6 +20,10 @@ export async function POST(req: Request) {
 
     if (isMinor && (!guardianName || !guardianPhone || !guardianDui)) {
       return NextResponse.json({ error: 'Los datos del padre/madre o encargado son obligatorios para menores de edad.' }, { status: 400 });
+    }
+
+    if (!isMinor && !dui) {
+      return NextResponse.json({ error: 'El DUI es obligatorio para participantes mayores de edad.' }, { status: 400 });
     }
 
     // Check total quota (128 max)
@@ -56,6 +60,7 @@ export async function POST(req: Request) {
           isDaviviendaClient: !!isDaviviendaClient,
           isTigoClient: !!isTigoClient,
           isMinor: !!isMinor,
+          dui: !isMinor ? dui : null,
           guardianName: guardianName || null,
           guardianPhone: guardianPhone || null,
           guardianDui: guardianDui || null,
@@ -65,6 +70,51 @@ export async function POST(req: Request) {
 
     if (insertError) {
       throw insertError;
+    }
+
+    // Attempt to send a welcome email via Resend
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            from: 'Elite Gaming Cup <registro@elitegamingcup.com>',
+            to: email,
+            subject: '¡Registro Exitoso! - Elite Gaming Cup',
+            html: `
+              <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px;">
+                <h2 style="color: #6a1b9a; text-align: center;">¡Bienvenido a la Elite Gaming Cup!</h2>
+                <p>Hola <strong>${fullName}</strong>,</p>
+                <p>Tu registro para la <strong>Elite Gaming Cup</strong>, patrocinada por Davivienda y Tigo, ha sido confirmado exitosamente.</p>
+                <p>Nos emociona tenerte en este gran torneo de EA Sports FC 26.</p>
+                <br />
+                <h3>Detalles de tu inscripción:</h3>
+                <ul>
+                  <li><strong>Participante:</strong> ${fullName}</li>
+                  <li><strong>Correo:</strong> ${email}</li>
+                  <li><strong>Teléfono:</strong> ${phone}</li>
+                  <li><strong>Categoría:</strong> ${isMinor ? 'Menor de edad' : 'Mayor de edad'}</li>
+                </ul>
+                <br />
+                <p>El torneo se llevará a cabo el <strong>domingo 31 de mayo de 2026</strong> en Metrocentro, 8ª Etapa, iniciando a las 10:00 a.m. Te recomendamos llegar con anticipación.</p>
+                <p>¡Prepárate para dar lo mejor en la cancha virtual!</p>
+                <br />
+                <hr style="border: none; border-top: 1px solid #eaeaea;" />
+                <p style="font-size: 0.8rem; color: #888; text-align: center;">Este es un correo automático, por favor no respondas a este mensaje.</p>
+              </div>
+            `
+          })
+        });
+      } catch (emailErr) {
+        console.error('Failed to send email:', emailErr);
+        // Do not fail registration if email fails
+      }
+    } else {
+      console.log('No RESEND_API_KEY provided. Email skipped.');
     }
 
     return NextResponse.json({ success: true });

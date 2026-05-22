@@ -51,7 +51,7 @@ function MainLogo() {
 export default function Home() {
   const [stats, setStats] = useState({ total: 0, remaining: 128 });
   const [form, setForm] = useState({
-    fullName: '', birthDate: '', phone: '', email: '',
+    fullName: '', birthDate: '', phone: '', email: '', dui: '',
     isDaviviendaClient: false, isTigoClient: false, isMinor: false,
     guardianName: '', guardianPhone: '', guardianDui: '',
     acceptedTerms: false, acceptedImageRights: false, acceptedPrivacy: false,
@@ -154,6 +154,13 @@ export default function Home() {
               <span className="label">Correo Electrónico</span>
               <input type="email" name="email" className="input-field" required placeholder="tucorreo@email.com" value={form.email} onChange={handleText} />
             </div>
+
+            {!form.isMinor && (
+              <div className="form-group">
+                <span className="label">Tu DUI (Documento Único de Identidad) <span className="required-badge">Obligatorio</span></span>
+                <input type="text" name="dui" className="input-field" required={!form.isMinor} placeholder="Ej: 00000000-0" value={form.dui} onChange={handleText} />
+              </div>
+            )}
 
             <div className={`checkbox-group sponsor-group${sponsorError ? ' sponsor-error' : ''}`}>
               <span className="label">Selecciona tu patrocinador <span className="required-badge">Obligatorio</span></span>
