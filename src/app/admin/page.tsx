@@ -84,17 +84,30 @@ export default function AdminDashboard() {
     }
   };
 
-  const downloadCSV = () => {
+  const downloadCSV = (type: 'all' | 'davivienda' | 'tigo' = 'all') => {
     if (!participants.length) return;
+    
+    let filteredParticipants = participants;
+    if (type === 'davivienda') {
+      filteredParticipants = participants.filter(p => p.isDaviviendaClient);
+    } else if (type === 'tigo') {
+      filteredParticipants = participants.filter(p => p.isTigoClient);
+    }
+
+    if (!filteredParticipants.length) {
+      alert('No hay participantes para esta categoría.');
+      return;
+    }
+
     const headers = ['ID', 'Nombre', 'Tarifa', 'Fecha Nac.', 'Teléfono', 'Email', 'Cliente Davivienda', 'Cliente Tigo', 'Fecha Registro'];
-    const rows = participants.map(p =>
+    const rows = filteredParticipants.map(p =>
       [p.id, `"${p.fullName}"`, p.tariff, p.birthDate, `="${p.phone}"`, p.email, p.isDaviviendaClient ? 'Sí' : 'No', p.isTigoClient ? 'Sí' : 'No', p.createdAt].join(';')
     );
     const bom = '\uFEFF';
     const blob = new Blob([bom + `${headers.join(';')}\n${rows.join('\n')}`], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'participantes_gaming_cup.csv';
+    a.download = `participantes_gaming_cup_${type}.csv`;
     a.click();
   };
 
@@ -121,7 +134,9 @@ export default function AdminDashboard() {
           </div>
           
           <div className="actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-            <button className="btn-outline" onClick={downloadCSV} style={{ margin: 0, padding: '0.6rem 1rem' }}>Exportar CSV</button>
+            <button className="btn-outline" onClick={() => downloadCSV('all')} style={{ margin: 0, padding: '0.6rem 1rem' }}>CSV (Todos)</button>
+            <button className="btn-outline" onClick={() => downloadCSV('davivienda')} style={{ margin: 0, padding: '0.6rem 1rem', borderColor: 'var(--gold)', color: 'var(--gold)' }}>CSV Davivienda</button>
+            <button className="btn-outline" onClick={() => downloadCSV('tigo')} style={{ margin: 0, padding: '0.6rem 1rem', borderColor: 'var(--cyan)', color: 'var(--cyan)' }}>CSV Tigo</button>
             <button className="btn-purple" onClick={handleGenerate} style={{ margin: 0, padding: '0.6rem 1rem' }}>Generar Llaves</button>
             <button className="btn-outline" onClick={async () => {
               await fetch('/api/admin/logout', { method: 'POST' });
