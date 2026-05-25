@@ -88,10 +88,10 @@ export default function AdminDashboard() {
     if (!participants.length) return;
     const headers = ['ID', 'Nombre', 'Tarifa', 'Fecha Nac.', 'Teléfono', 'Email', 'Cliente Davivienda', 'Cliente Tigo', 'Fecha Registro'];
     const rows = participants.map(p =>
-      [p.id, `"${p.fullName}"`, p.tariff, p.birthDate, `="${p.phone}"`, p.email, p.isDaviviendaClient ? 'Sí' : 'No', p.isTigoClient ? 'Sí' : 'No', p.createdAt].join(',')
+      [p.id, `"${p.fullName}"`, p.tariff, p.birthDate, `="${p.phone}"`, p.email, p.isDaviviendaClient ? 'Sí' : 'No', p.isTigoClient ? 'Sí' : 'No', p.createdAt].join(';')
     );
     const bom = '\uFEFF';
-    const blob = new Blob([bom + `${headers.join(',')}\n${rows.join('\n')}`], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([bom + `${headers.join(';')}\n${rows.join('\n')}`], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'participantes_gaming_cup.csv';
