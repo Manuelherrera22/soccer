@@ -99,9 +99,27 @@ export default function AdminDashboard() {
       return;
     }
 
-    const headers = ['ID', 'Nombre', 'Tarifa', 'Fecha Nac.', 'Teléfono', 'Email', 'Cliente Davivienda', 'Cliente Tigo', 'Fecha Registro'];
+    const headers = [
+      'ID', 'Nombre', 'Tarifa', 'Fecha Nac.', 'Teléfono', 'Email', 'Cliente Davivienda', 'Cliente Tigo', 
+      'Es Menor', 'DUI Participante', 'Nombre Encargado', 'Teléfono Encargado', 'DUI Encargado', 'Fecha Registro'
+    ];
     const rows = filteredParticipants.map(p =>
-      [p.id, `"${p.fullName}"`, p.tariff, p.birthDate, `="${p.phone}"`, p.email, p.isDaviviendaClient ? 'Sí' : 'No', p.isTigoClient ? 'Sí' : 'No', p.createdAt].join(';')
+      [
+        p.id, 
+        `"${p.fullName}"`, 
+        p.tariff, 
+        p.birthDate, 
+        `="${p.phone}"`, 
+        p.email, 
+        p.isDaviviendaClient ? 'Sí' : 'No', 
+        p.isTigoClient ? 'Sí' : 'No', 
+        p.isMinor ? 'Sí' : 'No',
+        p.dui ? `="${p.dui}"` : '',
+        p.guardianName ? `"${p.guardianName}"` : '',
+        p.guardianPhone ? `="${p.guardianPhone}"` : '',
+        p.guardianDui ? `="${p.guardianDui}"` : '',
+        p.createdAt
+      ].join(';')
     );
     const bom = '\uFEFF';
     const blob = new Blob([bom + `${headers.join(';')}\n${rows.join('\n')}`], { type: 'text/csv;charset=utf-8;' });
